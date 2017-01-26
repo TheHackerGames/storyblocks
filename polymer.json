@@ -1,9 +1,9 @@
 {
-  "entrypoint": "index.html",
+  "entrypoint": "src/index.html",
   "shell": "src/story-blocks.html",
   "fragments": [
-    "src/story-blocks-404.html",
-    "src/story-blocks-home.html"
+    "src/views/story-blocks-404.html",
+    "src/views/story-blocks-home.html"
   ],
   "sourceGlobs": [
     "src/**/*",
@@ -11,7 +11,7 @@
     "bower.json"
   ],
   "includeDependencies": [
-    "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+    "src/manifest.json",
+    "src/bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }
