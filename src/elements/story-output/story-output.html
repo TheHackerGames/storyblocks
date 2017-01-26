@@ -1,16 +1,21 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../shared-styles.html">
 
 <dom-module id="story-output">
     <template>
-        <style>
+        <style include="shared-styles">
           :host .content {
-              background-color: #ffffff;
-              padding: 10px;
+              background-color: #676e73;
+              color: #ffffff;
+              height: 40vh;
+              padding: 35px 48px;
           }
         </style>
         <div class="wrapper">
-            <h2>The story so far</h2>
             <div class="content">
+                <template is="dom-if" if="[[!icons.length]]">
+                    Your story appears here...
+                </template>
                 <template is="dom-repeat" items="[[icons]]">
                     <span>{{item.currentmeaning}}</span>
                 </template>

@@ -16,12 +16,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style include="shared-styles">
       :host {
-        display: block;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+      }
+      :host .left {
+          width: 40%;
+      }
+      :host .right {
+          width: 60%;
       }
     </style>
-    <resources-collection></resources-collection>
-    <story-workspace icons="{{selectedIcons}}"></story-workspace>
-    <story-output icons="{{selectedIcons}}"></story-output>
+    <div class="left">
+        <resources-collection></resources-collection>
+    </div>
+    <div class="right">
+        <story-workspace icons="{{selectedIcons}}"></story-workspace>
+        <story-output icons="{{selectedIcons}}"></story-output>
+    </div>
   </template>
 
   <script>
