@@ -44,7 +44,7 @@
                 this.set('icons', window.Storyblocks.emojis);
             },
             selectIcon (e) {
-                this.fire('select-icon', e.model.item);
+                this.fire('select-icon', JSON.parse(JSON.stringify(e.model.item)));
             }
         });
     </script>
