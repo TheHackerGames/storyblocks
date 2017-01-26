@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../shared-styles.html">
-
 <dom-module id="resources-collection">
     <template>
         <style include="shared-styles">
@@ -27,7 +26,7 @@
         </style>
         <div class="icons-container">
             <template is="dom-repeat" items="{{icons}}">
-                <story-blocks-icon icon="{{item.code_decimal}}"></story-blocks-icon>
+                <story-blocks-icon icon="{{item}}"></story-blocks-icon>
             </template>
         </div>
     </template>
@@ -42,8 +41,9 @@
                     notify: true
                 }
             },
+            behaviors : [Kano.EmojiSystem],
             attached () {
-                this.set('icons', window.Storyblocks.emojis);
+                this.set('icons', Kano.EmojiSystem.getCategoryList());
             }
         });
     </script>
