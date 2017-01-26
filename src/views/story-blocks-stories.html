@@ -9,18 +9,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../emojis.html">
 <link rel="import" href="../elements/elements.html">
 <link rel="import" href="../shared-styles.html">
-<link rel="import" href="../interact-wrapper.html">
 
-<dom-module id="story-blocks-home">
+<dom-module id="story-blocks-stories">
   <template>
     <style include="shared-styles">
       :host {
           display: flex;
           flex-direction: row;
           justify-content: center;
+      }
+      :host .left,
+      :host .right {
+          opacity: 0.5;
+          transition: 0.3s opacity ease;
+      }
+      :host .left:hover,
+      :host .right:hover {
+          opacity: 1;
       }
       :host .left {
           width: 40%;
@@ -29,34 +36,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           width: 60%;
       }
     </style>
-    <div class="left">
-        <resources-collection on-select-icon="selectIcon"></resources-collection>
-    </div>
-    <div class="right">
-        <story-workspace icons="{{selectedIcons}}" on-update-icon="updateIcon"></story-workspace>
-        <story-output icons="[[selectedIcons]]"></story-output>
-    </div>
+    My stories
   </template>
   <script>
     Polymer({
-        is: 'story-blocks-home',
-        properties: {
-            selectedIcons: {
-                type: Array,
-                notify: true,
-                value: function () {
-                    return []
-                }
-            }
-        },
-        selectIcon (e) {
-            this.push('selectedIcons', e.detail);
-        },
-        updateIcon (e) {
-            var index = e.detail.index,
-                meaning = e.detail.meaning;
-            this.set('selectedIcons.' + index + '.currentmeaning', meaning)
-        }
+        is: 'story-blocks-stories'
     });
   </script>
 </dom-module>

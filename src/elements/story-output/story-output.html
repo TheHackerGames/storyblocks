@@ -1,24 +1,62 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../shared-styles.html">
+<link rel="import" href="../story-blocks-word/story-blocks-word.html">
 
 <dom-module id="story-output">
     <template>
         <style include="shared-styles">
-          :host .content {
-              background-color: #676e73;
-              color: #ffffff;
+          :host {
+              font-family: 'Quicksand', sans-serif;
+          }
+          :host .wrapper {
+              background-color: #f4f8f9;
+              display: flex;
+              flex-direction: column;
               height: 40vh;
               padding: 35px 48px;
+          }
+          :host .content {
+              border: 1px solid #d3d6d9;
+              border-radius: 5px;
+              color: #414a51;
+              flex: 8 0 auto;
+              margin-bottom: 20px;
+              padding: 35px;
+          }
+          :host .placeholder {
+              font-weight: bold;
+          }
+          :host .actions {
+              flex: 1 0 auto;
+              text-align: right;
+          }
+          :host button {
+              background-color: #88c440;
+              border: 0;
+              border-radius: 5px;
+              color: #ffffff;
+              padding: 15px 25px;
+              text-transform: uppercase;
           }
         </style>
         <div class="wrapper">
             <div class="content">
                 <template is="dom-if" if="[[!icons.length]]">
-                    Your story appears here...
+                    <span class="placeholder">Your story appears here...</span>
                 </template>
-                <template is="dom-repeat" items="[[icons]]" restamp>
-                    <span>{{item.currentmeaning}}</span>
+                <template id="iconslist"
+                          is="dom-repeat"
+                          items="[[icons]]"
+                          sort="_sort"
+                          restamp>
+                    <story-blocks-word highlighted="[[item.highlighted]]"
+                                       index="{{index}}"
+                                       word="[[item.currentmeaning]]">
+                                       </story-blocks-word>
                 </template>
+            </div>
+            <div class="actions">
+                <button class="save-button" on-tap="saveStory">Save</button>
             </div>
         </div>
     </template>
@@ -28,12 +66,20 @@
             properties: {
                 icons: {
                     type: Array,
-                    required: true,
-                    observer: 'updateIcon'
+                    required: true
                 }
             },
-            updateIcon () {
-                console.log('Update icon');
+            observers: [
+                'updateIcons(icons.*)'
+            ],
+            _sort (a, b) {
+                return (a.order <= b.order) ? -1 : 1;
+            },
+            saveStory () {
+                this.fire('save-story');
+            },
+            updateIcons () {
+                this.$.iconslist.render();
             }
         });
     </script>
