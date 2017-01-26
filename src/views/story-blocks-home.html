@@ -28,53 +28,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <div class="left">
-        <resources-collection></resources-collection>
+        <resources-collection on-select-icon="selectIcon"></resources-collection>
     </div>
     <div class="right">
-        <story-workspace icons="{{selectedIcons}}"></story-workspace>
-        <story-output icons="{{selectedIcons}}"></story-output>
+        <story-workspace icons="{{selectedIcons}}" on-update-icon="updateIcon"></story-workspace>
+        <story-output icons="[[selectedIcons]]"></story-output>
     </div>
   </template>
-
   <script>
     Polymer({
-      is: 'story-blocks-home',
-      properties: {
-          selectedIcons: {
-              type: Array,
-              value: function () {
-                  return [{
-                      "category": "symbols",
-                      "code_decimal": "4&#8419;",
-                      "meanings": ["number", "math", "symbol"],
-                      "unicode": "0034-20e3",
-                      "emoji_order": "2112",
-                      "id": "four",
-                      "currentmeaning": "number",
-                      "unicode_alt": "0034-fe0f-20e3",
-                      "keywords": ["number", "math", "symbol"],
-                      "shortname": ":four:",
-                      "aliases": [],
-                      "aliases_ascii": [],
-                      "name": "keycap digit four"
-                  }, {
-                      "category": "people",
-                      "code_decimal": "&#128105;&#10084;&#128139;&#128105;",
-                      "meanings": ["people", "women", "love", "sex", "lgbt", "lesbian"],
-                      "unicode": "1f469-2764-1f48b-1f469",
-                      "emoji_order": "1039",
-                      "id": "kiss_ww",
-                      "currentmeaning": "people",
-                      "unicode_alt": "1f469-200d-2764-fe0f-200d-1f48b-200d-1f469",
-                      "keywords": ["people", "women", "love", "sex", "lgbt", "lesbian"],
-                      "shortname": ":kiss_ww:",
-                      "aliases": [":couplekiss_ww:"],
-                      "aliases_ascii": [],
-                      "name": "kiss (woman,woman)"
-                  }]
-              }
-          }
-      }
+        is: 'story-blocks-home',
+        properties: {
+            selectedIcons: {
+                type: Array,
+                notify: true,
+                value: function () {
+                    return []
+                }
+            }
+        },
+        selectIcon (e) {
+            this.push('selectedIcons', e.detail);
+        },
+        updateIcon (e) {
+            var index = e.detail.index,
+                meaning = e.detail.meaning;
+            this.set('selectedIcons.' + index + '.currentmeaning', meaning)
+        }
     });
   </script>
 </dom-module>

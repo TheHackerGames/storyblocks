@@ -27,12 +27,10 @@
         </style>
         <div class="icons-container">
             <template is="dom-repeat" items="{{icons}}">
-                <story-blocks-icon icon="{{item}}"></story-blocks-icon>
+                <story-blocks-icon icon="{{item}}" on-tap="selectIcon"></story-blocks-icon>
             </template>
         </div>
     </template>
-
-
     <script type="text/javascript">
         Polymer({
             is: 'resources-collection',
@@ -44,6 +42,9 @@
             },
             attached () {
                 this.set('icons', window.Storyblocks.emojis);
+            },
+            selectIcon (e) {
+                this.fire('select-icon', e.model.item);
             }
         });
     </script>
