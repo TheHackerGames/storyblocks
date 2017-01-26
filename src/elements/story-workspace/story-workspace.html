@@ -55,7 +55,7 @@
                     </div>
                 </template>
                 <template is="dom-repeat" items="[[icons]]">
-                    <story-blocks-icon icon="[[item.code_decimal]]"></story-blocks-icon>
+                    <story-blocks-icon icon="[[item]]" editable on-update-meaning="updateIconMeaning"></story-blocks-icon>
                 </template>
             </div>
         </div>
@@ -66,9 +66,6 @@
             behaviors: [
                 Kano.EmojiSytem
             ],
-            attached () {
-                console.log('2resources collection attached ');
-            },
             properties: {
                 icons: {
                     type: Array,
@@ -77,6 +74,10 @@
                         return []
                     }
                 }
+            },
+            updateIconMeaning (e) {
+                console.log('Update meaning for block: ' + e.model.index);
+                console.log('New meaning: ' + e.detail);
             }
         });
     </script>
