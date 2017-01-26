@@ -33,7 +33,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <resources-collection on-select-icon="selectIcon"></resources-collection>
     </div>
     <div class="right">
-        <story-workspace icons="{{selectedIcons}}" on-update-icon="updateIcon"></story-workspace>
+        <story-workspace
+            icons="{{selectedIcons}}"
+            on-sorted-elements="sortSelectedIcons"
+            on-update-icon="updateIcon"></story-workspace>
         <story-output icons="[[selectedIcons]]"></story-output>
     </div>
   </template>
@@ -47,15 +50,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 value: function () {
                     return []
                 }
+            },
+            idMap: {
+                type: Object,
+                value: {},
+                notify: true
             }
         },
         selectIcon (e) {
+            e.detail.order = this.selectedIcons.length;
+            e.detail.unique_id = Date.now().toString();
             this.push('selectedIcons', e.detail);
+            this.idMap[e.detail.unique_id] = e.detail.order;
         },
         updateIcon (e) {
             var index = e.detail.index,
                 meaning = e.detail.meaning;
             this.set('selectedIcons.' + index + '.currentmeaning', meaning)
+        },
+        sortSelectedIcons (e) {
+            for (let i in e.detail) {
+                this.set(
+                    'selectedIcons.0.order'.replace(
+                        '0',
+                        this.idMap[e.detail[i].unique_id]
+                    ), i
+                );
+            }
         }
     });
   </script>

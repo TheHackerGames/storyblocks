@@ -16,7 +16,7 @@
                 <template is="dom-if" if="[[!icons.length]]">
                     Your story appears here...
                 </template>
-                <template is="dom-repeat" items="[[icons]]" restamp>
+                <template id="iconslist" is="dom-repeat" items="[[icons]]" sort="_sort" restamp>
                     <span>{{item.currentmeaning}}</span>
                 </template>
             </div>
@@ -28,12 +28,17 @@
             properties: {
                 icons: {
                     type: Array,
-                    required: true,
-                    observer: 'updateIcon'
+                    required: true
                 }
             },
-            updateIcon () {
-                console.log('Update icon');
+            observers: [
+                'updateIcons(icons.*)'
+            ],
+            _sort (a, b) {
+                return (a.order < b.order) ? -1 : 1;
+            },
+            updateIcons () {
+                this.$.iconslist.render();
             }
         });
     </script>
