@@ -44,7 +44,11 @@
                 <template is="dom-if" if="[[!icons.length]]">
                     <span class="placeholder">Your story appears here...</span>
                 </template>
-                <template is="dom-repeat" items="{{icons}}">
+                <template id="iconslist"
+                          is="dom-repeat"
+                          items="[[icons]]"
+                          sort="_sort"
+                          restamp>
                     <story-blocks-word highlighted="[[item.highlighted]]"
                                        index="{{index}}"
                                        word="[[item.currentmeaning]]">
@@ -52,7 +56,7 @@
                 </template>
             </div>
             <div class="actions">
-                <button class="save-button">Save</button>
+                <button class="save-button" on-tap="saveStory">Save</button>
             </div>
         </div>
     </template>
@@ -62,9 +66,20 @@
             properties: {
                 icons: {
                     type: Array,
-                    notify: true,
                     required: true
                 }
+            },
+            observers: [
+                'updateIcons(icons.*)'
+            ],
+            _sort (a, b) {
+                return (a.order <= b.order) ? -1 : 1;
+            },
+            saveStory () {
+                this.fire('save-story');
+            },
+            updateIcons () {
+                this.$.iconslist.render();
             }
         });
     </script>

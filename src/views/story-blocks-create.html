@@ -9,11 +9,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../emojis.html">
 <link rel="import" href="../elements/elements.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../interact-wrapper.html">
 
-<dom-module id="story-blocks-home">
+<dom-module id="story-blocks-create">
   <template>
     <style include="shared-styles">
       :host {
@@ -41,14 +42,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <resources-collection on-select-icon="selectIcon"></resources-collection>
     </div>
     <div class="right">
-        <story-workspace icons="{{selectedIcons}}" on-highlight-icon="highlightIcon"
+        <story-workspace
+          icons="{{selectedIcons}}"
+          on-highlight-icon="highlightIcon"
+          on-sorted-elements="sortSelectedIcons"
           on-update-icon="updateIcon"></story-workspace>
-        <story-output icons="[[selectedIcons]]"></story-output>
+        <story-output icons="[[selectedIcons]]" on-save-story="saveStory"></story-output>
     </div>
   </template>
   <script>
     Polymer({
-        is: 'story-blocks-home',
+        is: 'story-blocks-create',
         properties: {
             selectedIcons: {
                 type: Array,
@@ -56,15 +60,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 value: function () {
                     return []
                 }
+            },
+            idMap: {
+                type: Object,
+                value: {},
+                notify: true
             }
         },
-        selectIcon (e) {
-            this.push('selectedIcons', e.detail);
+        attached () {
+            var savedStory = localStorage.getItem('story');
+            if (savedStory) {
+                var savedData = JSON.parse(savedStory);
+                this.set('selectedIcons', savedData);
+            }
         },
         highlightIcon (e) {
             var index = e.detail.index,
                 highlighted = e.detail.highlighted;
             this.set('selectedIcons.' + index + '.highlighted', highlighted);
+        },
+        saveStory () {
+            var story = JSON.stringify(this.selectedIcons);
+            localStorage.setItem('story', story);
+        },
+        selectIcon (e) {
+            e.detail.order = this.selectedIcons.length;
+            e.detail.unique_id = Date.now().toString();
+            this.push('selectedIcons', e.detail);
+            this.idMap[e.detail.unique_id] = e.detail.order;
+        },
+        sortSelectedIcons (e) {
+            for (let i in e.detail) {
+                this.set(
+                    'selectedIcons.0.order'.replace(
+                        '0',
+                        this.idMap[e.detail[i].unique_id]
+                    ), i
+                );
+            }
         },
         updateIcon (e) {
             var index = e.detail.index,

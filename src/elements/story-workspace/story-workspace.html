@@ -1,5 +1,4 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../emoji-system/emoji-system.html">
 <link rel="import" href="../story-blocks-icon/story-blocks-icon.html">
 <link rel="import" href="../../shared-styles.html">
 
@@ -47,7 +46,7 @@
             }
         </style>
         <div class="">
-            <div class="content">
+            <div id="selected_item" class="content">
                 <template is="dom-if" if="[[!icons.length]]">
                     <div class="placeholder">
                         <div class="placeholder-icon"></div>
@@ -63,9 +62,6 @@
     <script type="text/javascript">
         Polymer({
             is: 'story-workspace',
-            behaviors: [
-                Kano.EmojiSytem
-            ],
             attached () {
                 interact('.draggable')
                     .draggable({
@@ -97,13 +93,8 @@
                             target.setAttribute('data-y', y);
                         },
                         // call this function on every dragend event
-                        onend: function (event) {
-                            var textEl = event.target.querySelector('p');
-
-                            textEl && (textEl.textContent =
-                                'moved a distance of '
-                                + (Math.sqrt(event.dx * event.dx +
-                                         event.dy * event.dy) | 0) + 'px');
+                        onend: (event) => {
+                            this.sortSelectedElements(event);
                         }
                     });
             },
@@ -115,6 +106,33 @@
                         return []
                     }
                 }
+            },
+            contains (str, arr) {
+                for (let i in arr) {
+                    if (arr[i] === str) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+            sortSelectedElements (e) {
+                let i,
+                    newSelectedArray = [],
+                    childrens = this.$.selected_item.children;
+
+                for (i in childrens) {
+                    if (this.contains('draggable', childrens[i].classList)) {
+                        newSelectedArray.push([childrens[i].getBoundingClientRect().left, childrens[i].icon]);
+                    }
+                }
+
+                newSelectedArray.sort((a, b) => {
+                    return a[0] - b[0];
+                });
+
+                this.fire('sorted-elements', newSelectedArray.map(a => {
+                    return a[1];
+                }));
             }
         });
     </script>

@@ -1,0 +1,46 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../elements/elements.html">
+<link rel="import" href="../shared-styles.html">
+
+<dom-module id="story-blocks-stories">
+  <template>
+    <style include="shared-styles">
+      :host {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+      }
+      :host .left,
+      :host .right {
+          opacity: 0.5;
+          transition: 0.3s opacity ease;
+      }
+      :host .left:hover,
+      :host .right:hover {
+          opacity: 1;
+      }
+      :host .left {
+          width: 40%;
+      }
+      :host .right {
+          width: 60%;
+      }
+    </style>
+    My stories
+  </template>
+  <script>
+    Polymer({
+        is: 'story-blocks-stories'
+    });
+  </script>
+</dom-module>
