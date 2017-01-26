@@ -1,25 +1,59 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../emoji-system/emoji-system.html">
 <link rel="import" href="../story-blocks-icon/story-blocks-icon.html">
+<link rel="import" href="../../shared-styles.html">
 
 <dom-module id="story-workspace">
     <template>
-        <style>
+        <style include="shared-styles">
+            :host {
+                --icon-style: {
+                    border-radius: 4px;
+                    font-size: 40px;
+                    padding: 10px;
+                }
+            }
             :host .content {
                 align-items: center;
-                background-color: #ffffff;
+                background-color: #f4f8f9;
                 display: flex;
                 flex-direction: row;
+                flex-wrap: wrap;
                 justify-content: center;
+                height: calc(60vh - 64px);
                 padding: 10px;
             }
-            :host story-blocks-icon {
-                flex: 1 0 auto;
+            :host .placeholder {
+                color: #979797;
+            }
+            :host .placeholder-icon {
+                border: 1px dotted #979797;
+                border-radius: 5px;
+                height: 64px;
+                margin: 0 auto 20px auto;
+                position: relative;
+                width: 64px;
+            }
+            :host .placeholder-icon::after {
+                bottom: 0;
+                content: '+';
+                left: 0;
+                line-height: 64px;
+                margin: auto;
+                position: absolute;
+                right: 0;
+                text-align: center;
+                top: 0;
             }
         </style>
         <div class="">
-            <h2>Your characters</h2>
             <div class="content">
+                <template is="dom-if" if="[[!icons.length]]">
+                    <div class="placeholder">
+                        <div class="placeholder-icon"></div>
+                        <span class="placeholder-label">Drag icons here</span>
+                    </div>
+                </template>
                 <template is="dom-repeat" items="[[icons]]">
                     <story-blocks-icon icon="[[item.code_decimal]]"></story-blocks-icon>
                 </template>

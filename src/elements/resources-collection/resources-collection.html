@@ -1,20 +1,30 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../shared-styles.html">
 
 <dom-module id="resources-collection">
     <template>
-        <style>
+        <style include="shared-styles">
+            :host {
+                --icon-style: {
+                    border-radius: 4px;
+                    font-size: 40px;
+                    padding: 10px;
+                }
+            }
             :host .meaning {
                 cursor: pointer;
             }
             :host .icons-container {
-                display: block;
-                width: 300px;
-            }
-            :host .icons-container .icon {
-                display: inline-block;
+                background-color: #e9ebec;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                height: calc(100vh - 64px);
+                justify-content: space-between;
+                padding: 50px 100px;
+                overflow: scroll;
             }
         </style>
-
         <div class="icons-container">
             <template is="dom-repeat" items="{{icons}}">
                 <story-blocks-icon icon="{{item.code_decimal}}"></story-blocks-icon>
