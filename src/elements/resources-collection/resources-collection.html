@@ -3,10 +3,22 @@
 <dom-module id="resources-collection">
     <template>
         <style>
+            :host .meaning {
+                cursor: pointer;
+            }
+            :host .icons-container {
+                display: block;
+                width: 300px;
+            }
+            :host .icons-container .icon {
+                display: inline-block;
+            }
         </style>
 
-        <div class="">
-            <h1>Lorem</h1>
+        <div class="icons-container">
+            <template is="dom-repeat" items="{{icons}}">
+                <story-blocks-icon icon="{{item.code_decimal}}"></story-blocks-icon>
+            </template>
         </div>
     </template>
 
@@ -14,8 +26,14 @@
     <script type="text/javascript">
         Polymer({
             is: 'resources-collection',
+            properties: {
+                'icons': {
+                    type: Array,
+                    notify: true
+                }
+            },
             attached () {
-                console.log('resources collection attached ');
+                this.set('icons', window.Storyblocks.emojis);
             }
         });
     </script>
