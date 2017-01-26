@@ -1,17 +1,31 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../emoji-system/emoji-system.html">
+<link rel="import" href="../story-blocks-icon/story-blocks-icon.html">
 
 <dom-module id="story-workspace">
     <template>
         <style>
+            :host .content {
+                align-items: center;
+                background-color: #ffffff;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                padding: 10px;
+            }
+            :host story-blocks-icon {
+                flex: 1 0 auto;
+            }
         </style>
-
         <div class="">
-            <h1>lorem</h1>
+            <h2>Your characters</h2>
+            <div class="content">
+                <template is="dom-repeat" items="[[icons]]">
+                    <story-blocks-icon icon="[[item.code_decimal]]"></story-blocks-icon>
+                </template>
+            </div>
         </div>
     </template>
-
-
     <script type="text/javascript">
         Polymer({
             is: 'story-workspace',
@@ -20,6 +34,15 @@
             ],
             attached () {
                 console.log('2resources collection attached ');
+            },
+            properties: {
+                icons: {
+                    type: Array,
+                    required: true,
+                    value: function () {
+                        return []
+                    }
+                }
             }
         });
     </script>

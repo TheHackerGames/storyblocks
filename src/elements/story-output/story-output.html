@@ -1,0 +1,34 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="story-output">
+    <template>
+        <style>
+          :host .content {
+              background-color: #ffffff;
+              padding: 10px;
+          }
+        </style>
+        <div class="wrapper">
+            <h2>The story so far</h2>
+            <div class="content">
+                <template is="dom-repeat" items="[[icons]]">
+                    <span>{{item.currentmeaning}}</span>
+                </template>
+            </div>
+        </div>
+    </template>
+    <script type="text/javascript">
+        Polymer({
+            is: 'story-output',
+            properties: {
+                icons: {
+                    type: Array,
+                    required: true,
+                    value: function () {
+                        return []
+                    }
+                }
+            }
+        });
+    </script>
+</dom-module>
