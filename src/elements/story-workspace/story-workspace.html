@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../story-blocks-icon/story-blocks-icon.html">
 <link rel="import" href="../../shared-styles.html">
-
+<link rel="import" href="../../bower_components/polymer-sortablejs/polymer-sortablejs.html"/>
 <dom-module id="story-workspace">
     <template>
         <style include="shared-styles">
@@ -44,6 +44,19 @@
                 text-align: center;
                 top: 0;
             }
+            :host sortable-js {
+                display: flex;
+                flex-wrap: wrap;
+                margin: auto;
+                position: relative;
+                width: 90%;
+                overflow-y: scroll;
+                flex-direction: row;
+                max-height: 280px;
+            }
+            :host .item{
+                margin: 8px;
+            }
         </style>
         <div class="">
             <div class="content">
@@ -53,9 +66,16 @@
                         <span class="placeholder-label">Drag icons here</span>
                     </div>
                 </template>
+
+                <sortable-js animation="250" on-sort="_onSort">
+                    <template is="dom-repeat" items="[[icons]]">
+                    <div class="item"><story-blocks-icon icon="[[item]]" editable on-update-meaning="updateIconMeaning"></story-blocks-icon></div>
+                    </template>
+                </sortable-js>
+<!-- 
                 <template is="dom-repeat" items="[[icons]]">
                     <story-blocks-icon class="draggable" icon="[[item]]" editable on-update-meaning="updateIconMeaning"></story-blocks-icon>
-                </template>
+                </template> -->
             </div>
         </div>
     </template>
@@ -111,6 +131,9 @@
                         return []
                     }
                 }
+            },
+            _onSort(e){
+                console.log(e);
             },
             updateIconMeaning (e) {
                 this.fire('update-icon', {
