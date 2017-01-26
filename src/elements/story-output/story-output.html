@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../shared-styles.html">
-<link rel="import" href="../emoji-system/emoji-system.html">
+
 <dom-module id="story-output">
     <template>
         <style include="shared-styles">
@@ -16,7 +16,7 @@
                 <template is="dom-if" if="[[!icons.length]]">
                     Your story appears here...
                 </template>
-                <template is="dom-repeat" items="[[icons]]">
+                <template is="dom-repeat" items="[[icons]]" restamp>
                     <span>{{item.currentmeaning}}</span>
                 </template>
             </div>
@@ -29,13 +29,11 @@
                 icons: {
                     type: Array,
                     required: true,
-                    value: function () {
-                        return []
-                    }
+                    observer: 'updateIcon'
                 }
             },
-            attached () {
-
+            updateIcon () {
+                console.log('Update icon');
             }
         });
     </script>

@@ -6,21 +6,101 @@
         <style include="shared-styles">
             :host {
                 @apply --icon-style;
+                cursor: pointer;
+                position: relative;
+            }
+            :host hidden {
+                display: none;
+            }
+            :host .meanings {
+                background-color: #ffffff;
+                border: 1px solid #e9ebec;
+                border-radius: 2px;
+                font-size: 16px;
+                left: 50%;
+                line-height: 18px;
+                list-style: none;
+                margin: 0;
+                padding: 2px;
+                position: absolute;
+                top: 100%;
+                transform: translateX(-50%);
+            }
+            :host .meanings::before,
+            :host .meanings::after {
+                border-radius: 2px 0 0 0;
+                content: '▲';
+                height: 16px;
+                left: 50%;
+                position: absolute;
+                transform: translateX(-50%);
+                width: 16px;
+            }
+            :host .meanings::before {
+                color: #e9ebec;
+                top: -15px;
+            }
+            :host .meanings::after {
+                color: #ffffff;
+                top: -13px;
+            }
+            :host .meaning {
+                padding: 10px 15px;
+            }
+            :host .meaning--current {
+                background-color: #e9ebec;
+                color: #414a51;
+            }
+            :host .meaning--alternative {
+                color: #9fa4a8;
+                cursor: pointer;
+            }
+            :host .meaning--alternative:hover {
+                background-color: #e9ebec;
+                color: #414a51;
             }
         </style>
-        <span id="icon"></span>
+        <div id="icon" class="icon" on-tap="handleTap">
+            <span id="image"></span>
+            <template is="dom-if" if="[[editable]]">
+                <ul class="meanings" hidden$="[[!openMeanings]]">
+                    <template is="dom-repeat" items="[[icon.meanings]]">
+                        <li class$="[[computeMeaningClass(item, icon.currentmeaning)]]" on-tap="updateMeaning">[[item]]</li>
+                    </template>
+                </ul>
+            </template>
+        </div>
     </template>
     <script type="text/javascript">
         Polymer({
             is: 'story-blocks-icon',
             properties: {
+                editable: {
+                    type: Boolean,
+                    value: false
+                },
                 icon: {
                     type: String,
                     required: true
+                },
+                openMeanings: {
+                    type: Boolean,
+                    value: false
                 }
             },
             attached () {
-                this.$.icon.innerHTML = this.icon
+                this.$.image.innerHTML = this.icon.code_decimal;
+            },
+            computeMeaningClass (item, current) {
+                var baseClass = 'meaning',
+                    activeClass = item === current ? 'meaning--current' : 'meaning--alternative';
+                return baseClass + ' ' + activeClass;
+            },
+            handleTap () {
+                this.set('openMeanings', !this.openMeanings);
+            },
+            updateMeaning (e) {
+                this.fire('update-meaning', e.model.item);
             }
         });
     </script>
