@@ -67,20 +67,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
-      <app-drawer id="drawer">
-        <app-toolbar>Menu</app-toolbar>
+      <!-- <app-drawer id="drawer"> -->
+        <!-- <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="home" href="/home">Home</a>
-        </iron-selector>
-      </app-drawer>
+        </iron-selector> -->
+
+
+      <!-- </app-drawer> -->
 
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
-            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>My App</div>
+            <!-- <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button> -->
+            <div main-title>Story blocks</div>
           </app-toolbar>
         </app-header>
 
@@ -114,15 +116,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _routePageChanged: function(page) {
         this.page = page || 'home';
-
-        if (!this.$.drawer.persistent) {
-          this.$.drawer.close();
-        }
       },
 
       _pageChanged: function(page) {
         // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl('/views/story-blocks-' + page + '.html');
+        var resolvedPageUrl = this.resolveUrl('/src/views/story-blocks-' + page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
 
