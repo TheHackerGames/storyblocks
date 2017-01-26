@@ -1,11 +1,8 @@
 <script>
 (function(Kano) {
     // @polymerBehavior
-    Kano.EmojiSytem = {
+    Kano.EmojiSystem = {
         properties: {
-            data: {
-                type: Array
-            },
             decimalTable: {
                 type: Object,
                 value: {}
@@ -20,29 +17,22 @@
             }
         },
         attached () {
-            var configUrl = 'https://raw.githubusercontent.com/delormev/emoji-dict-generator/master/emoji_meaning.json';
-            fetch(configUrl)
-                .then(function (r) {
-                    return r.json();
-                })
-                .then(function (json) {
-                    this.data = json;
-                    for (var key in json) {
-                        var emoji = json[key];
-                        // add to decimal table
-                        this.decimalTable[emoji.code_decimal] = emoji;
-                        this.shortNameTable[emoji.shortname] = emoji;
+            this.setupData(window.Storyblocks.emojis);
+        },
+        setupData (json) {
+            for (var key in json) {
+                var emoji = json[key];
+                // add to decimal table
+                this.decimalTable[emoji.code_decimal] = emoji;
+                this.shortNameTable[emoji.shortname] = emoji;
 
-                        // add to category table
-                        var category = emoji.category;
-                        categoryArr = this.categoryTable[category] ? this.categoryTable[category] : [];
-                        this.categoryTable[category] = categoryArr;
-                        this.categoryTable[category].push(emoji);
-
-
-                    }
-                    this.doTest();
-                }.bind(this));
+                // add to category table
+                var category = emoji.category;
+                categoryArr = this.categoryTable[category] ? this.categoryTable[category] : [];
+                this.categoryTable[category] = categoryArr;
+                this.categoryTable[category].push(emoji);
+            }
+            //this.doTest();
         },
         doTest () {
             console.log(this.shortNameToMeaning(':pig:'));
@@ -51,9 +41,8 @@
             // switch meaning 
             console.log(this.decimalToMeaning('&#127809;'));
             console.log(this.switchMeaning('&#127809;', 2));
-            
-        },
 
+        },
         decimalToEmoji (decimal) {
             var emoji = this.decimalTable[decimal];
             if (emoji) {
@@ -68,7 +57,7 @@
             }
             return null;
         },
-        decimalToMeaningsArr (decimal) {
+        decimalToMeaningsArr(decimal) {
             var emoji = this.decimalToEmoji(decimal);
             if (emoji) {
                 return emoji.meanings;
@@ -89,11 +78,11 @@
             }
             return [];
         },
-        shortNameToMeaning (shortname){
+        shortNameToMeaning(shortname) {
             var emoji = this.shortNameToEmoji(shortname);
             return emoji.currentmeaning;
         },
-        switchMeaning (code, index) {
+        switchMeaning(code, index) {
             var symbol = code.charAt(0),
                 meanings = [];
             if (symbol === '&') {

@@ -1,5 +1,4 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../emoji-system/emoji-system.html">
 <link rel="import" href="../story-blocks-icon/story-blocks-icon.html">
 <link rel="import" href="../../shared-styles.html">
 
@@ -63,9 +62,6 @@
     <script type="text/javascript">
         Polymer({
             is: 'story-workspace',
-            behaviors: [
-                Kano.EmojiSytem
-            ],
             attached () {
                 interact('.draggable')
                     .draggable({
