@@ -1,0 +1,53 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../shared-styles.html">
+
+<dom-module id="story-blocks-word">
+    <template>
+        <style include="shared-styles">
+            :host .word--active {
+                border-bottom: 1px dotted #8e9397;
+                color: #8e9397;
+                font-weight: bold;
+            }
+        </style>
+        <span id="word" class$="[[class]]">
+          [[formattedWord]]
+        </span>
+    </template>
+    <script type="text/javascript">
+        Polymer({
+            is: 'story-blocks-word',
+            properties: {
+                class: {
+                    type: String,
+                    computed: 'computeClass(highlighted)'
+                },
+                formattedWord: {
+                    type: String,
+                    computed: 'format(word, index)'
+                },
+                highlighted: {
+                    type: Boolean
+                },
+                index: {
+                    type: Number
+                },
+                word: {
+                    type: String,
+                    required: true
+                }
+            },
+            computeClass(highlighted) {
+                var baseClass = 'word',
+                    activeClass = highlighted ? 'word--active' : 'word--inactive';
+                return baseClass + ' ' + activeClass;
+            },
+            format (word, index) {
+                if (index === 0) {
+                    return word[0].toUpperCase() + word.slice(1);
+                }
+                return word;
+            }
+        });
+    </script>
+</dom-module>

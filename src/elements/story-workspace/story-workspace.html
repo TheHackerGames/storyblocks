@@ -55,7 +55,7 @@
                     </div>
                 </template>
                 <template is="dom-repeat" items="[[icons]]">
-                    <story-blocks-icon class="draggable" icon="[[item]]" editable on-update-meaning="updateIconMeaning"></story-blocks-icon>
+                    <story-blocks-icon class="draggable" icon="[[item]]" index="{{index}}" editable></story-blocks-icon>
                 </template>
             </div>
         </div>
@@ -115,12 +115,6 @@
                         return []
                     }
                 }
-            },
-            updateIconMeaning (e) {
-                this.fire('update-icon', {
-                    index: e.model.index,
-                    meaning: e.detail
-                })
             }
         });
     </script>

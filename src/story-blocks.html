@@ -23,14 +23,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="my-icons.html">
 <link rel="import" href="./views/story-blocks-404.html">
 <link rel="import" href="./emojis.html">
-
+<link rel="import" href="./shared-styles.html">
 <dom-module id="story-blocks">
   <template>
-    <style>
+    <style include="shared-styles">
       :host {
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
-
         display: block;
       }
 

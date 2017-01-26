@@ -13,9 +13,10 @@
                 display: none;
             }
             :host .meanings {
-                background-color: #ffffff;
+                background-color: #414a51;
                 border: 1px solid #e9ebec;
-                border-radius: 2px;
+                color: #ffffff;
+                border-radius: 4px;
                 font-size: 16px;
                 left: 50%;
                 line-height: 18px;
@@ -41,23 +42,20 @@
                 top: -15px;
             }
             :host .meanings::after {
-                color: #ffffff;
+                color: #414a51;
                 top: -13px;
             }
             :host .meaning {
                 padding: 10px 15px;
             }
             :host .meaning--current {
-                background-color: #e9ebec;
-                color: #414a51;
+                background-color: #9fa4a8;
             }
             :host .meaning--alternative {
-                color: #9fa4a8;
                 cursor: pointer;
             }
             :host .meaning--alternative:hover {
-                background-color: #e9ebec;
-                color: #414a51;
+                background-color: #9fa4a8;
             }
         </style>
         <div id="icon" class="icon" on-tap="handleTap">
@@ -83,6 +81,9 @@
                     type: String,
                     required: true
                 },
+                index: {
+                    type: Number
+                },
                 openMeanings: {
                     type: Boolean,
                     value: false
@@ -97,10 +98,17 @@
                 return baseClass + ' ' + activeClass;
             },
             handleTap () {
+                this.fire('highlight-icon', {
+                    index: this.index,
+                    highlighted: !this.openMeanings
+                })
                 this.set('openMeanings', !this.openMeanings);
             },
             updateMeaning (e) {
-                this.fire('update-meaning', e.model.item);
+                this.fire('update-icon', {
+                    index: this.index,
+                    meaning: e.model.item
+                })
             }
         });
     </script>

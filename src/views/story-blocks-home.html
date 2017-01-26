@@ -21,6 +21,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           flex-direction: row;
           justify-content: center;
       }
+      :host .left,
+      :host .right {
+          opacity: 0.5;
+          transition: 0.3s opacity ease;
+      }
+      :host .left:hover,
+      :host .right:hover {
+          opacity: 1;
+      }
       :host .left {
           width: 40%;
       }
@@ -32,7 +41,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <resources-collection on-select-icon="selectIcon"></resources-collection>
     </div>
     <div class="right">
-        <story-workspace icons="{{selectedIcons}}" on-update-icon="updateIcon"></story-workspace>
+        <story-workspace icons="{{selectedIcons}}" on-highlight-icon="highlightIcon"
+          on-update-icon="updateIcon"></story-workspace>
         <story-output icons="[[selectedIcons]]"></story-output>
     </div>
   </template>
@@ -51,10 +61,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         selectIcon (e) {
             this.push('selectedIcons', e.detail);
         },
+        highlightIcon (e) {
+            var index = e.detail.index,
+                highlighted = e.detail.highlighted;
+            this.set('selectedIcons.' + index + '.highlighted', highlighted);
+        },
         updateIcon (e) {
             var index = e.detail.index,
                 meaning = e.detail.meaning;
-            this.set('selectedIcons.' + index + '.currentmeaning', meaning)
+            this.set('selectedIcons.' + index + '.currentmeaning', meaning);
         }
     });
   </script>
