@@ -1,0 +1,23 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="story-blocks-icon">
+    <template>
+        <style>
+        </style>
+        <span id="icon"></span>
+    </template>
+    <script type="text/javascript">
+        Polymer({
+            is: 'story-blocks-icon',
+            properties: {
+                icon: {
+                    type: String,
+                    required: true
+                }
+            },
+            attached () {
+                this.$.icon.innerHTML = this.icon
+            }
+        });
+    </script>
+</dom-module>
