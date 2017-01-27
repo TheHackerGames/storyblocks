@@ -70,7 +70,7 @@
 
                 <sortable-js id="selected_item" animation="350" on-sort="_onSort">
                     <template is="dom-repeat" items="[[icons]]">
-                    <story-blocks-icon class="item" icon="[[item]]" index="{{index}}" editable></story-blocks-icon>
+                    <story-blocks-icon class="item" icon="[[item]]" style$="[[_computeZIndex(index, items.length)]]" index="{{index}}" editable></story-blocks-icon>
                     </template>
                 </sortable-js>
 
@@ -128,6 +128,9 @@
                     }
                 }
             },
+            _computeZIndex (index, items) {
+                return 'z-index:' + (items.length - index);
+            },
             contains (str, arr) {
                 for (let i in arr) {
                     if (arr[i] === str) {
@@ -138,7 +141,6 @@
             },
             _onSort (e) {
                 if (e.detail) {
-                    console.log("sort",e.detail.newIndex, e.detail.oldIndex);
                     this.fire('sorted-elements', {newIndex: e.detail.newIndex, oldIndex: e.detail.oldIndex});
                 }
                
