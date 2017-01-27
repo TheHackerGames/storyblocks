@@ -1,0 +1,99 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../shared-styles.html">
+<link rel="import" href="../../webgazer-wrapper.html">
+
+<dom-module id="story-eye-track">
+  <template>
+  </template>
+  <script>
+    Polymer({
+        is: 'story-eye-track',
+        properties: {
+            checking: {
+                type: Boolean,
+                value: false
+            }
+        },
+        myFunctB : function () {},
+        attached () {
+        },
+        startTracking () {
+            webgazer.setRegression('ridge') /* currently must set regression and tracker */
+                .setTracker('clmtrackr')
+                .setGazeListener(function (data, clock) {
+                    //   console.log(data); /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
+                    //   console.log(clock); /* elapsed time in milliseconds since webgazer.begin() was called */
+                })
+                .begin()
+                .showPredictionPoints(true); /* shows a square every 100 milliseconds where current prediction is */
+
+            this.width = 320;
+            this.height = 240;
+            this.topDist = '0px';
+            this.leftDist = '0px';
+
+            setTimeout(() => {
+                this.checkIfReady();
+            }, 100);
+        },
+        checkEyeLocation() {
+            if (this.checking) {
+                return;
+            }
+
+            this.checking = true;
+            setInterval(() => {
+                var pos = webgazer.getCurrentPrediction();
+                // ,current = this.root.elementFromPoint(pos.x, pos.y);
+
+                this.fire('looked-at', pos);
+
+                // if (this.selectedElement !== current) {
+                //     this.selectedElement = current;
+                //     this.selectedElementTime = Date.now();
+                // } else {
+                //     if (Date.now() - this.selectedElementTime > 3000) {
+                //         this.selectedElementTime = Date.now();
+                //     }
+                // }
+            }, 300);
+        },
+        drawLoop() {
+            requestAnimFrame(drawLoop);
+            overlay.getContext('2d').clearRect(0, 0, this.width, this.height);
+            if (cl.getCurrentPosition()) {
+                cl.draw(overlay);
+            }
+        },
+        setup () {
+
+            webgazer.params.imgWidth = this.width;
+            webgazer.params.imgHeight = this.height;
+
+            var overlay = document.createElement('canvas');
+            overlay.id = 'overlay';
+            overlay.style.position = 'absolute';
+            overlay.width = this.width;
+            overlay.height = this.height;
+            overlay.style.top = this.topDist;
+            overlay.style.left = this.leftDist;
+            overlay.style.margin = '0px';
+
+            document.body.appendChild(overlay);
+
+            var cl = webgazer.getTracker().clm;
+
+            setTimeout(() => {
+                this.checkEyeLocation();
+            }, 2000);
+        },
+        checkIfReady () {
+            if (webgazer.isReady()) {
+                this.setup();
+            } else {
+                setTimeout(this.checkIfReady, 100);
+            }
+        }
+    });
+  </script>
+</dom-module>

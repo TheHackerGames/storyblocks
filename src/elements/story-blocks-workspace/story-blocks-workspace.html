@@ -139,7 +139,9 @@
                 if (e.detail) {
                     this.fire('sorted-elements', {newIndex: e.detail.newIndex, oldIndex: e.detail.oldIndex});
                 }
-
+            },
+            lookedAt(e) {
+                console.log(this.root.elementFromPoint(e.x, e.y));
             }
         });
     </script>

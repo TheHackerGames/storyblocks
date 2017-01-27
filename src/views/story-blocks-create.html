@@ -38,11 +38,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           width: 60%;
       }
     </style>
+
+    <story-eye-track id="eye_tracking" on-looked-at="lookedAtPosition"></story-eye-track>
+
     <div class="left">
         <story-blocks-resources on-select-icon="selectIcon"></story-blocks-resources>
     </div>
     <div class="right">
-        <story-blocks-workspace
+        <story-blocks-workspace id="workspace"
           icons="{{selectedIcons}}"
           on-delete-icon="deleteIcon"
           on-highlight-icon="highlightIcon"
@@ -70,6 +73,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.set('selectedIcons', savedData.selectedIcons);
                 localStorage.removeItem('story');
             }
+
+            setTimeout(() => {
+                this.$.eye_tracking.startTracking();
+            }, 3000);
+
+        },
+        lookedAtPosition (e) {
+            this.$.workspace.lookedAt(e.detail);
         },
         deleteIcon (e) {
             this.splice('selectedIcons', e.detail, 1);
