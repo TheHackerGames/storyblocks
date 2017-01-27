@@ -71,7 +71,9 @@
             </template>
             <sortable-js id="selected_item" animation="350" on-sort="_onSort">
                 <template is="dom-repeat" items="[[icons]]">
-                <story-blocks-icon class="item" icon="[[item]]" style$="[[_computeZIndex(index, items.length)]]" index="{{index}}" editable></story-blocks-icon>
+                    <div class="icon-wrapper" style$="[[computeIconStyle(index)]]">
+                        <story-blocks-icon class="item" icon="[[item]]" index="{{index}}" editable></story-blocks-icon>
+                    </div>
                 </template>
             </sortable-js>
         </div>
@@ -124,8 +126,9 @@
                     }
                 }
             },
-            _computeZIndex (index, items) {
-                return 'z-index:' + (items.length - index);
+            computeIconStyle (index) {
+                var inversePosition = 1000 - index
+                return 'z-index: ' + inversePosition + ';';
             },
             contains (str, arr) {
                 for (let i in arr) {
