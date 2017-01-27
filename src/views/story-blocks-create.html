@@ -47,8 +47,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           on-highlight-icon="highlightIcon"
           on-sorted-elements="sortSelectedIcons"
           on-update-icon="updateIcon"></story-workspace>
-        <story-output icons="[[selectedIcons]]" on-save-story="saveStory"></story-output>
+        <story-output icons="[[selectedIcons]]" on-save-story="openSaveModal"></story-output>
     </div>
+    <story-blocks-save-modal id="save-modal" on-save-story="saveStory"></story-blocks-save-modal>
   </template>
   <script>
     Polymer({
@@ -61,21 +62,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 
             }
         },
-        attached () {
-            var savedStory = localStorage.getItem('story');
-            if (savedStory) {
-                var savedData = JSON.parse(savedStory);
-                this.set('selectedIcons', savedData);
-            }
-        },
         highlightIcon (e) {
             var index = e.detail.index,
                 highlighted = e.detail.highlighted;
             this.set('selectedIcons.' + index + '.highlighted', highlighted);
         },
-        saveStory () {
-            var story = JSON.stringify(this.selectedIcons);
-            localStorage.setItem('story', story);
+        openSaveModal () {
+            this.$['save-modal'].icons = this.selectedIcons;
+            this.$['save-modal'].open();
+        },
+        saveStory (e) {
+            var savedStories = localStorage.getItem('stories'),
+                saveData = []
+                newStory = {
+                    icon: e.detail.icon,
+                    name: e.detail.name,
+                    selectedIcons: this.selectedIcons
+                };
+            if (savedStories) {
+                saveData = JSON.parse(savedStories);
+            }
+            saveData.push(newStory);
+            localStorage.setItem('stories', JSON.stringify(saveData));
         },
         selectIcon (e) {
             e.detail.order = this.selectedIcons.length;

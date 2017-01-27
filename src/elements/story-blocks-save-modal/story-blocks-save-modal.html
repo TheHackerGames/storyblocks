@@ -1,0 +1,94 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../shared-styles.html">
+
+<dom-module id="story-blocks-save-modal">
+    <template>
+        <style include="shared-styles">
+            /*:host {
+                --icon-style: {
+                    font-size: 40px;
+                    padding: 10px;
+                }
+            }*/
+            :host .container {
+                width: 500px;
+            }
+            :host .copy {
+                border-bottom: 1px solid #d3d6d9;
+                color: #9fa4a8;
+                font-weight: bold;
+                padding: 20px 0;
+                text-align: center;
+            }
+            :host .actions {
+                padding-top: 20px;
+                text-align: center;
+            }
+            :host button {
+                background-color: #88c440;
+                border: 0;
+                border-radius: 5px;
+                color: #ffffff;
+                padding: 15px 25px;
+                text-transform: uppercase;
+            }
+            :host button:disabled {
+                background-color: #e9ebec;
+            }
+        </style>
+        <paper-dialog id="modal">
+            <div class="container">
+                <div class="icons">
+                    <template is="dom-repeat" items="{{icons}}">
+                        <story-blocks-icon icon="{{item}}" on-tap="selectName"></story-blocks-icon>
+                    </template>
+                </div>
+                <div class="copy">
+                    <template is="dom-if" if="[[!name]]">
+                        <span class="placeholder">Name your story</span>
+                    </template>
+                    <template is="dom-if" if="[[name]]">
+                        <span class="name">{{name}}</span>
+                    </template>
+                </div>
+                <div class="actions">
+                    <button on-tap="saveStory" disabled$="[[!name]]">Save</button>
+                </div>
+            </div>
+        </paper-dialog>
+    </template>
+    <script type="text/javascript">
+        Polymer({
+            is: 'story-blocks-save-modal',
+            properties: {
+                icons: {
+                    type: Array,
+                    required: true
+                },
+                icon: {
+                    type: String,
+                    value: null
+                },
+                name: {
+                    type: String,
+                    value: null
+                }
+            },
+            open () {
+                this.$.modal.open();
+            },
+            selectName (e) {
+                this.set('name', e.model.item.currentmeaning);
+                this.set('icon', e.model.item.code_decimal);
+            },
+            saveStory () {
+                this.fire('save-story', {
+                    icon: this.icon,
+                    name: this.name
+                });
+                this.$.modal.close();
+            }
+        });
+    </script>
+</dom-module>
