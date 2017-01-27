@@ -1,0 +1,53 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../shared-styles.html">
+
+<dom-module id="story-blocks-story-card">
+    <template>
+        <style include="shared-styles">
+          :host {
+              align-items: center;
+              background-color: #ffffff;
+              border-radius: 5px;
+              box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+              cursor: pointer;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              padding: 30px;
+              text-align: center;
+          }
+          :host .icon {
+              font-size: 60px;
+          }
+          :host .name {
+              font-weight: bold;
+          }
+        </style>
+        <span id="card" class="card">
+            <div id="icon" class="icon"></div>
+            <div class="name">
+                {{formattedName}}
+            </div>
+        </span>
+    </template>
+    <script type="text/javascript">
+        Polymer({
+            is: 'story-blocks-story-card',
+            properties: {
+                formattedName: {
+                    type: String,
+                    computed: 'formatName(story.name)'
+                },
+                story: {
+                    type: Object
+                }
+            },
+            attached () {
+                this.$.icon.innerHTML = this.story.icon;
+            },
+            formatName (name) {
+                return name[0].toUpperCase() + name.slice(1);
+            }
+        });
+    </script>
+</dom-module>

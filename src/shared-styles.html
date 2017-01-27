@@ -19,6 +19,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             margin: 0;
             font-family: 'Quicksand', sans-serif;
         }
+        [class^="icon-"], [class*=" icon-"] {
+            /* use !important to prevent issues with browser extensions that change fonts */
+            font-family: 'Magicons' !important;
+            speak: none;
+            font-style: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+
+            /* Better Font Rendering =========== */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .icon-pencil-filled:before {
+            content: "\e96d";
+        }
+        .icon-bubble-filled:before {
+            content: "\e915";
+        }
+        .icon-trash-filled:before {
+          content: "\e997";
+        }
     </style>
   </template>
 </dom-module>

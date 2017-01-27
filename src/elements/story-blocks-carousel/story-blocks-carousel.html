@@ -1,0 +1,135 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../story-blocks-icon/story-blocks-icon.html">
+<link rel="import" href="../../shared-styles.html">
+
+<dom-module id="story-blocks-carousel">
+    <template>
+        <style include="shared-styles">
+            :host {
+                --icon-style: {
+                    border-radius: 4px;
+                    font-size: 40px;
+                    padding: 10px;
+                }
+            }
+            :host *:hidden {
+                display: none;
+            }
+            :host .carousel {
+                align-items: center;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                width: 100%;
+            }
+            :host .control {
+                color: #9fa4a8;
+                cursor: pointer;
+                display: flex;
+                flex: 3 0 auto;
+                overflow: hidden;
+                position: relative;
+            }
+            :host .previous {
+                justify-content: flex-end;
+            }
+            :host .next {
+                justify-content: flex-start;
+            }
+            :host .wrapper {
+                flex: 0 1 auto;
+                margin: 0 40px;
+                overflow: hidden;
+                position: relative;
+            }
+            :host .track {
+                align-items: center;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                position: relative;
+                width: 100%;
+            }
+            :host .slide {
+                align-items: center;
+                display: flex;
+                flex: 1 0 auto;
+                flex-direction: row;
+                height: 80px;
+                justify-content: center;
+                position: relative;
+            }
+        </style>
+        <div class="carousel" id="carousel">
+            <div class="control previous" on-tap="previous">
+                &#x25C0;
+            </div>
+            <div class="wrapper" id="wrapper">
+                <div class="track" id="track" hidden$="[[visible]]">
+                    <template is="dom-repeat" items="{{icons}}">
+                        <div class="slide">
+                            <story-blocks-icon icon="{{item}}" on-tap="handleTap"></story-blocks-icon>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div class="control next" on-tap="next">
+                &#x25B6;
+            </div>
+        </div>
+    </template>
+    <script type="text/javascript">
+        Polymer({
+            is: 'story-blocks-carousel',
+            properties: {
+                icons: {
+                    type: Array,
+                    required: true,
+                    value: function () {
+                        return [];
+                    }
+                },
+                selectedIcon: {
+                    type: Number,
+                    value: 0
+                }
+            },
+            observers: [
+                'updateTrack(selectedIcon, icons)'
+            ],
+            init () {
+                setTimeout(this.updateTrack(), 1000)
+            },
+            handleTap (e) {
+                this.fire('icon-tapped', e.model.item);
+            },
+            next () {
+                var currentIcon = this.selectedIcon,
+                    nextIcon = currentIcon + 1;
+                if (nextIcon < this.icons.length) {
+                    this.set('selectedIcon', nextIcon);
+                } else {
+                    this.set('selectedIcon', 0);
+                }
+            },
+            previous () {
+                var currentIcon = this.selectedIcon,
+                    previousIcon = currentIcon -  1;
+                if (previousIcon > -1) {
+                    this.set('selectedIcon', previousIcon);
+                } else {
+                    this.set('selectedIcon', this.icons.length - 1);
+                }
+            },
+            updateTrack (selectedIcon) {
+                var wrapper = this.$.wrapper,
+                    track = this.$.track,
+                    wrapperWidth = wrapper.offsetWidth,
+                    trackWidth = this.icons.length * 100,
+                    translation = selectedIcon * wrapperWidth * -1;
+                track.style.width = trackWidth + '%';
+                track.style.transform = 'translateX(' + translation + 'px)';
+            }
+        });
+    </script>
+</dom-module>

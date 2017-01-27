@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../story-blocks-carousel/story-blocks-carousel.html">
 <link rel="import" href="../../shared-styles.html">
 
 <dom-module id="story-blocks-save-modal">
@@ -31,11 +32,11 @@
                 background-color: #e9ebec;
             }
         </style>
-        <paper-dialog id="modal">
+        <paper-dialog id="modal" open="{{opened}}">
             <div class="container">
                 <div class="icons">
-                    <template is="dom-repeat" items="{{icons}}">
-                        <story-blocks-icon icon="{{item}}" on-tap="selectName"></story-blocks-icon>
+                    <template is="dom-if" if="[[icons]]">
+                        <story-blocks-carousel icons="[[icons]]" on-icon-tapped="selectName" visible="[[opened]]"></story-blocks-carousel>
                     </template>
                 </div>
                 <div class="copy">
@@ -73,8 +74,8 @@
                 this.$.modal.open();
             },
             selectName (e) {
-                this.set('name', e.model.item.currentmeaning);
-                this.set('icon', e.model.item.code_decimal);
+                this.set('name', e.detail.currentmeaning);
+                this.set('icon', e.detail.code_decimal);
             },
             saveStory () {
                 this.fire('save-story', {
