@@ -42,10 +42,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           text-decoration: none;
       }
       app-header a:nth-child(n+2) {
-          margin-left: 20px;
+          margin-left: 40px;
       }
       app-header a .icon {
-          margin-right: 5px;
+          margin-right: 16px;
       }
     </style>
     <app-location route="{{route}}"></app-location>
@@ -68,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="404"
             role="main">
-          <story-blocks-create name="create"></story-blocks-create>
+          <story-blocks-create name="create" on-change-page="changePage"></story-blocks-create>
           <story-blocks-stories name="stories"></story-blocks-stories>
           <story-blocks-404 name="404"></story-blocks-404>
         </iron-pages>
@@ -88,15 +88,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       observers: [
           '_routePageChanged(routeData.page)',
       ],
-      _routePageChanged: function(page) {
+      changePage (e) {
+          this.page = e.detail;
+      },
+      _routePageChanged (page) {
           this.page = page || 'create';
       },
-      _pageChanged: function(page) {
+      _pageChanged (page) {
           // Load page import on demand. Show 404 page if fails
           var resolvedPageUrl = this.resolveUrl('views/story-blocks-' + page + '.html');
           this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
-      _showPage404: function() {
+      _showPage404 () {
           this.page = '404';
       },
     });

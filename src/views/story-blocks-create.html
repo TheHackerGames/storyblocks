@@ -39,15 +39,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <div class="left">
-        <resources-collection on-select-icon="selectIcon"></resources-collection>
+        <story-blocks-resources on-select-icon="selectIcon"></story-blocks-resources>
     </div>
     <div class="right">
-        <story-workspace
+        <story-blocks-workspace
           icons="{{selectedIcons}}"
+          on-delete-icon="deleteIcon"
           on-highlight-icon="highlightIcon"
           on-sorted-elements="sortSelectedIcons"
-          on-update-icon="updateIcon"></story-workspace>
-        <story-output icons="[[selectedIcons]]" on-save-story="openSaveModal"></story-output>
+          on-update-icon="updateIcon"></story-blocks-workspace>
+        <story-blocks-output icons="[[selectedIcons]]" on-save-story="openSaveModal"></story-blocks-output>
     </div>
     <story-blocks-save-modal id="save-modal" on-save-story="saveStory"></story-blocks-save-modal>
   </template>
@@ -59,7 +60,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 type: Array,
                 notify: true,
                 value: []
-                
+
             }
         },
         attached () {
@@ -69,6 +70,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.set('selectedIcons', savedData.selectedIcons);
                 localStorage.removeItem('story');
             }
+        },
+        deleteIcon (e) {
+            console.log(e.detail);
+            this.splice('selectedIcons', e.detail, 1);
         },
         highlightIcon (e) {
             var index = e.detail.index,
@@ -92,6 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             saveData.push(newStory);
             localStorage.setItem('stories', JSON.stringify(saveData));
+            this.fire('change-page', 'stories');
         },
         selectIcon (e) {
             e.detail.order = this.selectedIcons.length;
@@ -102,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             var oldOrder = e.detail.oldIndex,
                 newOrder = e.detail.newIndex;
             this.set('selectedIcons.0.order'.replace('0',oldOrder), newOrder);
-            this.set('selectedIcons.0.order'.replace('0',newOrder), oldOrder);   
+            this.set('selectedIcons.0.order'.replace('0',newOrder), oldOrder);
         },
         updateIcon (e) {
             var index = e.detail.index,

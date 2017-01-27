@@ -18,7 +18,7 @@
             :host hidden {
                 display: none;
             }
-            :host .meanings {
+            :host .edit-menu {
                 background-color: #414a51;
                 border: 1px solid #e9ebec;
                 color: #ffffff;
@@ -28,13 +28,13 @@
                 line-height: 18px;
                 list-style: none;
                 margin: 0;
-                padding: 2px;
+                padding: 0;
                 position: absolute;
                 top: 100%;
                 transform: translateX(-50%);
             }
-            :host .meanings::before,
-            :host .meanings::after {
+            :host .edit-menu::before,
+            :host .edit-menu::after {
                 border-radius: 2px 0 0 0;
                 content: '▲';
                 height: 16px;
@@ -43,13 +43,17 @@
                 transform: translateX(-50%);
                 width: 16px;
             }
-            :host .meanings::before {
+            :host .edit-menu::before {
                 color: #e9ebec;
+                top: -16px;
+            }
+            :host .edit-menu::after {
+                color: #414a51;
                 top: -15px;
             }
-            :host .meanings::after {
-                color: #414a51;
-                top: -13px;
+            :host .meanings {
+                padding: 2px;
+                list-style: none;
             }
             :host .meaning {
                 padding: 10px 15px;
@@ -63,15 +67,28 @@
             :host .meaning--alternative:hover {
                 background-color: #9fa4a8;
             }
+            :host .delete {
+                background-color: #e83c33;
+                border-radius: 0 0 2px 2px;
+                padding: 16px 15px;
+            }
+            :host .delete .icon {
+                margin-left: 25px;
+            }
         </style>
         <div id="icon" class="icon" on-tap="handleTap">
             <span id="image"></span>
             <template is="dom-if" if="[[editable]]">
-                <ul class="meanings" hidden$="[[!openMeanings]]">
-                    <template is="dom-repeat" items="[[icon.meanings]]">
-                        <li class$="[[computeMeaningClass(item, icon.currentmeaning)]]" on-tap="updateMeaning">[[item]]</li>
-                    </template>
-                </ul>
+                <div class="edit-menu"  hidden$="[[!openMenu]]">
+                    <ul class="meanings">
+                        <template is="dom-repeat" items="[[icon.meanings]]">
+                            <li class$="[[computeMeaningClass(item, icon.currentmeaning)]]" on-tap="updateMeaning">[[item]]</li>
+                        </template>
+                    </ul>
+                    <div class="delete" on-tap="delete">
+                        Delete<span class="icon icon-trash-filled"></span>
+                    </div>
+                </div>
             </template>
         </div>
     </template>
@@ -90,7 +107,7 @@
                 index: {
                     type: Number
                 },
-                openMeanings: {
+                openMenu: {
                     type: Boolean,
                     value: false
                 }
@@ -103,18 +120,21 @@
                     activeClass = item === current ? 'meaning--current' : 'meaning--alternative';
                 return baseClass + ' ' + activeClass;
             },
+            delete () {
+                this.fire('delete-icon', this.index);
+            },
             handleTap () {
                 this.fire('highlight-icon', {
                     index: this.index,
-                    highlighted: !this.openMeanings
+                    highlighted: !this.openMenu
                 })
-                this.set('openMeanings', !this.openMeanings);
+                this.set('openMenu', !this.openMenu);
             },
             updateMeaning (e) {
                 this.fire('update-icon', {
                     index: this.index,
                     meaning: e.model.item
-                })
+                });
             }
         });
     </script>

@@ -2,7 +2,7 @@
 <link rel="import" href="../story-blocks-icon/story-blocks-icon.html">
 <link rel="import" href="../../shared-styles.html">
 <link rel="import" href="../../bower_components/polymer-sortablejs/polymer-sortablejs.html"/>
-<dom-module id="story-workspace">
+<dom-module id="story-blocks-workspace">
     <template>
         <style include="shared-styles">
             :host {
@@ -25,6 +25,7 @@
             }
             :host .placeholder {
                 color: #979797;
+                position: absolute;
             }
             :host .placeholder-icon {
                 border: 1px dotted #979797;
@@ -46,43 +47,38 @@
                 top: 0;
             }
             :host sortable-js {
+                align-items: flex-start;
                 display: flex;
                 flex-wrap: wrap;
+                height: 100%;
+                justify-content: center;
                 margin: auto;
                 position: relative;
                 width: 90%;
                 overflow-y: visible;
                 flex-direction: row;
-                max-height: 280px;
             }
             :host .item{
                 margin: 8px;
             }
         </style>
-        <div class="">
-            <div class="content">
-                <template is="dom-if" if="[[!icons.length]]">
-                    <div class="placeholder">
-                        <div class="placeholder-icon"></div>
-                        <span class="placeholder-label">Drag icons here</span>
-                    </div>
+        <div class="content">
+            <template is="dom-if" if="[[!icons.length]]">
+                <div class="placeholder">
+                    <div class="placeholder-icon"></div>
+                    <span class="placeholder-label">Drag icons here</span>
+                </div>
+            </template>
+            <sortable-js id="selected_item" animation="350" on-sort="_onSort">
+                <template is="dom-repeat" items="[[icons]]">
+                <story-blocks-icon class="item" icon="[[item]]" style$="[[_computeZIndex(index, items.length)]]" index="{{index}}" editable></story-blocks-icon>
                 </template>
-
-                <sortable-js id="selected_item" animation="350" on-sort="_onSort">
-                    <template is="dom-repeat" items="[[icons]]">
-                    <story-blocks-icon class="item" icon="[[item]]" style$="[[_computeZIndex(index, items.length)]]" index="{{index}}" editable></story-blocks-icon>
-                    </template>
-                </sortable-js>
-
-       <!--          <template is="dom-repeat" items="[[icons]]">
-                    <story-blocks-icon class="draggable" icon="[[item]]" index="{{index}}" editable></story-blocks-icon>
-                </template> -->
-            </div>
+            </sortable-js>
         </div>
     </template>
     <script type="text/javascript">
         Polymer({
-            is: 'story-workspace',
+            is: 'story-blocks-workspace',
             attached () {
                 interact('.draggable')
                     .draggable({
@@ -143,7 +139,7 @@
                 if (e.detail) {
                     this.fire('sorted-elements', {newIndex: e.detail.newIndex, oldIndex: e.detail.oldIndex});
                 }
-               
+
             }
         });
     </script>
