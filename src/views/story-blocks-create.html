@@ -42,16 +42,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <story-eye-track id="eye_tracking" on-looked-at="lookedAtPosition"></story-eye-track>
 
     <div class="left">
-        <story-blocks-resources on-select-icon="selectIcon"></story-blocks-resources>
+        <story-blocks-resources id="story_resource" on-select-icon="selectIcon"></story-blocks-resources>
     </div>
     <div class="right">
-        <story-blocks-workspace id="workspace"
+        <story-blocks-workspace
           icons="{{selectedIcons}}"
           on-delete-icon="deleteIcon"
           on-highlight-icon="highlightIcon"
           on-sorted-elements="sortSelectedIcons"
           on-update-icon="updateIcon"></story-blocks-workspace>
         <story-blocks-output icons="[[selectedIcons]]" on-save-story="openSaveModal"></story-blocks-output>
+    </div>
+    <div on-tap="startEyeTrackingMode">
+        Eyes mode
     </div>
     <story-blocks-save-modal id="save-modal" on-save-story="saveStory"></story-blocks-save-modal>
   </template>
@@ -73,14 +76,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.set('selectedIcons', savedData.selectedIcons);
                 localStorage.removeItem('story');
             }
-
-            setTimeout(() => {
-                this.$.eye_tracking.startTracking();
-            }, 3000);
-
+        },
+        startEyeTrackingMode() {
+            this.$.eye_tracking.startTracking();
         },
         lookedAtPosition (e) {
-            this.$.workspace.lookedAt(e.detail);
+            this.$.story_resource.lookedAt(e.detail);
         },
         deleteIcon (e) {
             this.splice('selectedIcons', e.detail, 1);
