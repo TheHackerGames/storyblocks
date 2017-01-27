@@ -68,6 +68,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 notify: true
             }
         },
+        attached () {
+            var savedStory = localStorage.getItem('story');
+            if (savedStory) {
+                var savedData = JSON.parse(savedStory);
+                this.set('selectedIcons', savedData.selectedIcons);
+                localStorage.removeItem('story');
+            }
+        },
         highlightIcon (e) {
             var index = e.detail.index,
                 highlighted = e.detail.highlighted;
