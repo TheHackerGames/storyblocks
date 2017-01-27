@@ -46,9 +46,7 @@
                 </template>
                 <template id="iconslist"
                           is="dom-repeat"
-                          items="[[icons]]"
-                          sort="_sort"
-                          restamp>
+                          items="[[icons]]">
                     <story-blocks-word highlighted="[[item.highlighted]]"
                                        index="{{index}}"
                                        word="[[item.currentmeaning]]">
@@ -66,15 +64,13 @@
             properties: {
                 icons: {
                     type: Array,
-                    required: true
+                    required: true,
+                    notify: true
                 }
             },
             observers: [
                 'updateIcons(icons.*)'
             ],
-            _sort (a, b) {
-                return (a.order <= b.order) ? -1 : 1;
-            },
             saveStory () {
                 this.fire('save-story');
             },

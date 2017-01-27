@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../story-blocks-icon/story-blocks-icon.html">
 <link rel="import" href="../../shared-styles.html">
-
+<link rel="import" href="../../bower_components/polymer-sortablejs/polymer-sortablejs.html"/>
 <dom-module id="story-workspace">
     <template>
         <style include="shared-styles">
@@ -21,6 +21,7 @@
                 justify-content: center;
                 height: calc(60vh - 64px);
                 padding: 10px;
+                overflow-y: scroll;
             }
             :host .placeholder {
                 color: #979797;
@@ -44,18 +45,38 @@
                 text-align: center;
                 top: 0;
             }
+            :host sortable-js {
+                display: flex;
+                flex-wrap: wrap;
+                margin: auto;
+                position: relative;
+                width: 90%;
+                overflow-y: visible;
+                flex-direction: row;
+                max-height: 280px;
+            }
+            :host .item{
+                margin: 8px;
+            }
         </style>
         <div class="">
-            <div id="selected_item" class="content">
+            <div class="content">
                 <template is="dom-if" if="[[!icons.length]]">
                     <div class="placeholder">
                         <div class="placeholder-icon"></div>
                         <span class="placeholder-label">Drag icons here</span>
                     </div>
                 </template>
-                <template is="dom-repeat" items="[[icons]]">
+
+                <sortable-js id="selected_item" animation="350" on-sort="_onSort">
+                    <template is="dom-repeat" items="[[icons]]">
+                    <story-blocks-icon class="item" icon="[[item]]" style$="[[_computeZIndex(index, items.length)]]" index="{{index}}" editable></story-blocks-icon>
+                    </template>
+                </sortable-js>
+
+       <!--          <template is="dom-repeat" items="[[icons]]">
                     <story-blocks-icon class="draggable" icon="[[item]]" index="{{index}}" editable></story-blocks-icon>
-                </template>
+                </template> -->
             </div>
         </div>
     </template>
@@ -107,6 +128,9 @@
                     }
                 }
             },
+            _computeZIndex (index, items) {
+                return 'z-index:' + (items.length - index);
+            },
             contains (str, arr) {
                 for (let i in arr) {
                     if (arr[i] === str) {
@@ -115,24 +139,11 @@
                 }
                 return false;
             },
-            sortSelectedElements (e) {
-                let i,
-                    newSelectedArray = [],
-                    childrens = this.$.selected_item.children;
-
-                for (i in childrens) {
-                    if (this.contains('draggable', childrens[i].classList)) {
-                        newSelectedArray.push([childrens[i].getBoundingClientRect().left, childrens[i].icon]);
-                    }
+            _onSort (e) {
+                if (e.detail) {
+                    this.fire('sorted-elements', {newIndex: e.detail.newIndex, oldIndex: e.detail.oldIndex});
                 }
-
-                newSelectedArray.sort((a, b) => {
-                    return a[0] - b[0];
-                });
-
-                this.fire('sorted-elements', newSelectedArray.map(a => {
-                    return a[1];
-                }));
+               
             }
         });
     </script>
