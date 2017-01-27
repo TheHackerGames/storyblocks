@@ -57,14 +57,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             selectedIcons: {
                 type: Array,
                 notify: true,
-                value: function () {
-                    return []
-                }
-            },
-            idMap: {
-                type: Object,
-                value: {},
-                notify: true
+                value: []
+                
             }
         },
         attached () {
@@ -87,17 +81,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             e.detail.order = this.selectedIcons.length;
             e.detail.unique_id = Date.now().toString();
             this.push('selectedIcons', e.detail);
-            this.idMap[e.detail.unique_id] = e.detail.order;
         },
         sortSelectedIcons (e) {
-            for (let i in e.detail) {
-                this.set(
-                    'selectedIcons.0.order'.replace(
-                        '0',
-                        this.idMap[e.detail[i].unique_id]
-                    ), i
-                );
-            }
+            var oldOrder = e.detail.oldIndex,
+                newOrder = e.detail.newIndex;
+            this.set('selectedIcons.0.order'.replace('0',oldOrder), newOrder);
+            this.set('selectedIcons.0.order'.replace('0',newOrder), oldOrder);   
         },
         updateIcon (e) {
             var index = e.detail.index,
