@@ -1,0 +1,77 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../elements/elements.html">
+<link rel="import" href="../shared-styles.html">
+
+<dom-module id="story-blocks-home">
+  <template>
+    <style include="shared-styles">
+      :host .home {
+          background-color: var(--app-primary-color);
+          height: 100vh;
+          width: 100vw;
+      }
+      :host .main {
+          padding-top: 20vh;
+      }
+      :host .title {
+          color: #ffffff;
+          font-size: 80px;
+          text-align: center;
+      }
+      :host .actions {
+          color: #ffffff;
+          margin-top: 40px;
+          text-align: center;
+      }
+      :host .action {
+          border: 0;
+          border-radius: 5px;
+          color: #ffffff;
+          font-weight: bold;
+          margin: 0 16px;
+          padding: 15px 25px;
+          text-decoration: none;
+          text-transform: uppercase;
+      }
+      :host .actions .primary {
+          background-color: #88c440;
+      }
+      :host .actions .secondary {
+          background-color: #29a4ff;
+      }
+      :host .logo {
+          bottom: 0;
+          height: 40vh;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          width: auto;
+      }
+    </style>
+    <div class="home">
+        <div class="main">
+            <h1 class="title">Story space</h1>
+            <div class="actions">
+                <a class="action primary" href="/create">Create a story</a>
+                <a class="action secondary" href="/stories">My stories</a>
+            </div>
+        </div>
+        <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67.39 46.75"><defs><style>.cls-1{fill:#ebeded;}.cls-2{fill:#d5e0df;}.cls-3{fill:#ff6900;}.cls-4{fill:#bd4e00;}</style></defs><title>igloo-logo</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M58,29V46.75H0V29a29,29,0,0,1,58,0Z"/><path class="cls-2" d="M39,1.77A29,29,0,0,0,0,29V46.75H20V29A29,29,0,0,1,39,1.77Z"/><path class="cls-1" d="M57.87,27.17a9.59,9.59,0,0,1,9.52,9.67v9.92h-19V36.83A9.6,9.6,0,0,1,57.87,27.17Z"/><path class="cls-2" d="M48.49,35.23a9.74,9.74,0,0,1,.23-1.05c0-.05,0-.11,0-.17a9.67,9.67,0,0,1,.42-1.13l.13-.28a9.69,9.69,0,0,1,.47-.87l.13-.21a9.69,9.69,0,0,1,.7-.95l.18-.2a9.65,9.65,0,0,1,.68-.69l.21-.2a9.56,9.56,0,0,1,.93-.72l.18-.11a9.47,9.47,0,0,1,.87-.5L54,28c.26-.12.52-.22.79-.32l.23-.08A9.32,9.32,0,0,1,56,27.35l.59-.09.3,0c.31,0,.62,0,.94,0H45.19c-.32,0-.63,0-.94,0l-.3,0-.53.08-.06,0a9.32,9.32,0,0,0-1.06.27l-.23.08c-.27.09-.53.2-.79.32l-.14.06-.16.09a9.45,9.45,0,0,0-.87.5l-.18.11a9.57,9.57,0,0,0-.93.72l-.21.2a9.65,9.65,0,0,0-.68.69l-.18.2a9.67,9.67,0,0,0-.7.95l-.13.21a9.69,9.69,0,0,0-.47.87l-.13.28A9.67,9.67,0,0,0,36.08,34c0,.05,0,.11,0,.17a9.73,9.73,0,0,0-.23,1.05c0,.11,0,.22,0,.33a9.85,9.85,0,0,0-.09,1.27v9.92H48.35V36.83a9.85,9.85,0,0,1,.09-1.27C48.46,35.45,48.47,35.34,48.49,35.23Z"/><path class="cls-3" d="M50.35,46.75V36.83a7.52,7.52,0,1,1,15,0v9.92Z"/><path class="cls-4" d="M54.87,29.81a7.68,7.68,0,0,0-4.52,7v9.92h9V36.83A7.68,7.68,0,0,0,54.87,29.81Z"/></g></g></svg>
+    </div>
+  </template>
+  <script>
+    Polymer({
+        is: 'story-blocks-home'
+    });
+  </script>
+</dom-module>

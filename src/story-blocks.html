@@ -27,9 +27,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style include="shared-styles">
       :host {
-          --app-primary-color: #4285f4;
+          --app-primary-color: #1093f5;
           --app-secondary-color: black;
           display: block;
+      }
+      *:hidden {
+          display: none !important;
       }
       app-header {
           color: #fff;
@@ -56,17 +59,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed>
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
-        <app-header condenses reveals effects="waterfall">
-          <app-toolbar>
-            <a href="/create"><span class="icon icon-pencil-filled"></span>Create a story</a>
-            <a href="/stories"><span class="icon icon-bubble-filled"></span>My stories</a>
-          </app-toolbar>
-        </app-header>
+        <header hidden$="[[displayHeader]]">
+            <app-header condenses reveals effects="waterfall">
+              <app-toolbar>
+                <a href="/create"><span class="icon icon-pencil-filled"></span>Create a story</a>
+                <a href="/stories"><span class="icon icon-bubble-filled"></span>My stories</a>
+              </app-toolbar>
+            </app-header>
+        </header>
         <iron-pages
             selected="[[page]]"
             attr-for-selected="name"
             fallback-selection="404"
             role="main">
+          <story-blocks-home name="home"></story-blocks-home>
           <story-blocks-create name="create" on-change-page="changePage"></story-blocks-create>
           <story-blocks-stories name="stories"></story-blocks-stories>
           <story-blocks-404 name="404"></story-blocks-404>
@@ -78,6 +84,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
         is: 'story-blocks',
         properties: {
+            displayHeader: {
+                type: Boolean,
+                computed: 'computeHeader(page)'
+            },
             page: {
                 type: String,
                 reflectToAttribute: true,
@@ -90,8 +100,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         changePage (e) {
             this.page = e.detail;
         },
+        computeHeader(page) {
+            return page === 'home';
+        },
         _routePageChanged (page) {
-            this.page = page || 'create';
+            this.page = page || 'home';
         },
         _pageChanged (page) {
             // Load page import on demand. Show 404 page if fails
