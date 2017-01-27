@@ -75,6 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div main-title>Story blocks</div>
             <a href="/create">Create a story</a>
             <a href="/stories">My stories</a>
+            <a href="/tracking">Eye tracking</a>
           </app-toolbar>
         </app-header>
 
@@ -85,6 +86,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             role="main">
           <story-blocks-create name="create"></story-blocks-create>
           <story-blocks-stories name="stories"></story-blocks-stories>
+          <story-blocks-tracking name="tracking"></story-blocks-tracking>
           <story-blocks-404 name="404"></story-blocks-404>
         </iron-pages>
       </app-header-layout>
@@ -99,12 +101,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         page: {
           type: String,
           reflectToAttribute: true,
-          observer: '_pageChanged',
+          observer: '_pageChanged'
         },
       },
 
       observers: [
-        '_routePageChanged(routeData.page)',
+        '_routePageChanged(routeData.page)'
       ],
 
       _routePageChanged: function(page) {
@@ -112,6 +114,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pageChanged: function(page) {
+          console.log("show page", page);
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl = this.resolveUrl('views/story-blocks-' + page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
