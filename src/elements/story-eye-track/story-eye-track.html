@@ -69,7 +69,6 @@
             }
         },
         setup () {
-
             webgazer.params.imgWidth = this.width;
             webgazer.params.imgHeight = this.height;
 
@@ -81,7 +80,7 @@
             overlay.style.top = this.topDist;
             overlay.style.left = this.leftDist;
             overlay.style.margin = '0px';
-
+            overlay.style.display = 'none';
             document.body.appendChild(overlay);
 
             var cl = webgazer.getTracker().clm;
