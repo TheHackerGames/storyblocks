@@ -82,7 +82,7 @@
                 <div class="edit-menu"  hidden$="[[!openMenu]]">
                     <ul class="meanings">
                         <template is="dom-repeat" items="[[icon.meanings]]">
-                            <li class$="[[computeMeaningClass(item, icon.currentmeaning)]]" on-tap="updateMeaning">[[item]]</li>
+                            <li class$="[[computeMeaningClass(item.text, icon.currentmeaning.text)]]" on-tap="updateMeaning">[[item.text]]</li>
                         </template>
                     </ul>
                     <div class="delete" on-tap="delete">

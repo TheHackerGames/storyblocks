@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../emojis.html">
+<link rel="import" href="../icons.html">
 <link rel="import" href="../elements/elements.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../interact-wrapper.html">
@@ -72,7 +72,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
         },
         deleteIcon (e) {
-            console.log(e.detail);
             this.splice('selectedIcons', e.detail, 1);
         },
         highlightIcon (e) {
