@@ -79,9 +79,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 localStorage.removeItem('story');
             }
         },
-        toggleEyeTrackingMode (eyeTracking) {
-            if (eyeTracking) {
+        toggleEyeTrackingMode (newValue, oldValue) {
+            if (newValue) {
                 this.$.eye_tracking.startTracking();
+            }
+            if (!newValue && oldValue) {
+                location.reload();
             }
         },
         lookedAtPosition (e) {
