@@ -35,12 +35,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host .right {
           width: 60%;
       }
+      :host .story {
+          width: 120px;
+          height: 80px;
+          background-color: grey;
+          margin: 20px;
+      }
     </style>
-    My stories
+
+    <template is="dom-repeat" items="[[savedStories]]">
+        <div class="story" on-tap="openStory">
+            {{item.name}}
+        </div>
+    </template>
+
   </template>
   <script>
     Polymer({
-        is: 'story-blocks-stories'
+        is: 'story-blocks-stories',
+        properties: {
+            'savedStories': {
+                type: Object,
+                notify: true
+            }
+        },
+        attached () {
+            this.savedStories = JSON.parse(localStorage.getItem('stories'));
+        },
+        openStory (e) {
+            localStorage.setItem('story', JSON.stringify(e.model.item));
+            window.location.href = '/create';
+        }
     });
   </script>
 </dom-module>
