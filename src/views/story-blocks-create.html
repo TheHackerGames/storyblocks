@@ -25,6 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host .left,
       :host .right {
           opacity: 0.5;
+          height: calc(100vh - 64px);
           transition: 0.3s opacity ease;
       }
       :host .left:hover,
@@ -32,17 +33,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           opacity: 1;
       }
       :host .left {
+          overflow-y: scroll;
           width: 40%;
       }
       :host .right {
           width: 60%;
       }
     </style>
-
     <story-eye-track id="eye_tracking" on-looked-at="lookedAtPosition"></story-eye-track>
-
     <div class="left">
-        <story-blocks-resources id="story_resource" on-select-icon="selectIcon"></story-blocks-resources>
+        <story-blocks-resources id="story_resource" on-select-icon="selectIcon"
+          eye-tracking="[[eyeTracking]]"></story-blocks-resources>
     </div>
     <div class="right">
         <story-blocks-workspace
@@ -53,20 +54,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           on-update-icon="updateIcon"></story-blocks-workspace>
         <story-blocks-output icons="[[selectedIcons]]" on-save-story="openSaveModal"></story-blocks-output>
     </div>
-    <div on-tap="startEyeTrackingMode">
-        Eyes mode
-    </div>
     <story-blocks-save-modal id="save-modal" on-save-story="saveStory"></story-blocks-save-modal>
   </template>
   <script>
     Polymer({
         is: 'story-blocks-create',
         properties: {
+            eyeTracking: {
+                type: Boolean,
+                value: false,
+                observer: 'toggleEyeTrackingMode'
+            },
             selectedIcons: {
                 type: Array,
                 notify: true,
                 value: []
-
             }
         },
         attached () {
@@ -77,8 +79,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 localStorage.removeItem('story');
             }
         },
-        startEyeTrackingMode() {
-            this.$.eye_tracking.startTracking();
+        toggleEyeTrackingMode (eyeTracking) {
+            if (eyeTracking) {
+                this.$.eye_tracking.startTracking();
+            }
         },
         lookedAtPosition (e) {
             this.$.story_resource.lookedAt(e.detail);

@@ -49,6 +49,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app-header a .icon {
           margin-right: 16px;
       }
+      :host .eye-tracking-button {
+          border: 0;
+          border-radius: 5px;
+          color: #ffffff;
+          font-size: 12px;
+          margin-left: auto;
+          padding: 15px 25px;
+          text-transform: uppercase;
+      }
+      :host .eye-tracking-button.inactive {
+          background-color: #d3d6d9;
+      }
+      :host .eye-tracking-button.active {
+          background-color: #88c440;
+      }
+      :host .eye-tracking-icon,
+      :host .eye-tracking-label {
+          display: inline-block;
+      }
     </style>
     <app-location route="{{route}}"></app-location>
     <app-route
@@ -64,6 +83,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <app-toolbar>
                 <a href="/create"><span class="icon icon-pencil-filled"></span>Create a story</a>
                 <a href="/stories"><span class="icon icon-bubble-filled"></span>My stories</a>
+                <div class$="eye-tracking-button [[eyeTrackingClass]]" on-tap="toggleEyeTrackingMode">
+                    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                    <svg class="eye-tracking-icon" width="28px" height="16px" viewBox="0 0 28 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <title>eye-icon</title>
+                        <defs></defs>
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="eye-icon" fill="#FFFFFF">
+                                <path d="M13.8616634,13.3811862 C10.9155644,13.3811862 8.52752475,11.0049103 8.52752475,8.07332414 C8.52752475,5.14201379 10.9155644,2.76546207 13.8616634,2.76546207 C16.8077624,2.76546207 19.195802,5.14173793 19.195802,8.07332414 C19.195802,11.0049103 16.8077624,13.3811862 13.8616634,13.3811862 M27.7216634,8.02201379 C27.7211089,8.01042759 27.72,7.9993931 27.7191683,7.98808276 C27.7186139,7.98228966 27.7183366,7.97649655 27.7177822,7.97097931 C27.7169505,7.96270345 27.7155644,7.95442759 27.7144554,7.94642759 C27.7133465,7.93677241 27.7122376,7.92711724 27.7105743,7.91773793 C27.710297,7.91663448 27.7100198,7.91525517 27.7100198,7.91415172 C27.6759208,7.70091034 27.5750099,7.50091034 27.4203168,7.34697931 C26.5359604,6.30394483 25.4838812,5.37566897 24.4140594,4.52794483 C22.1100198,2.70118621 19.4749703,1.17291034 16.566297,0.557737931 C14.8851881,0.202427586 13.1935446,0.187255172 11.5035644,0.487944828 C9.96633663,0.7616 8.48483168,1.33042759 7.09813861,2.03553103 C4.92772277,3.13897931 2.94554455,4.66035862 1.21841584,6.36601379 C0.898772277,6.6816 0.580792079,7.0038069 0.290257426,7.34670345 C-0.0967524752,7.80297931 -0.0967524752,8.3433931 0.290257426,8.79966897 C1.17461386,9.84270345 2.22669307,10.7707034 3.29651485,11.6187034 C5.60083168,13.4454621 8.23588119,14.9734621 11.1445545,15.5886345 C12.8256634,15.9442207 14.5175842,15.9593931 16.2075644,15.6587034 C17.7445149,15.3853241 19.2260198,14.8162207 20.6129901,14.1111172 C22.7834059,13.007669 24.7655842,11.4862897 26.4927129,9.78063448 C26.8123564,9.46477241 27.1303366,9.14284138 27.4208713,8.79994483 C27.5755644,8.64573793 27.6764752,8.44601379 27.7105743,8.23249655 C27.7105743,8.2313931 27.7108515,8.23001379 27.7111287,8.22891034 C27.7127921,8.21925517 27.713901,8.20987586 27.7150099,8.20022069 C27.7161188,8.19222069 27.717505,8.18394483 27.7183366,8.17566897 C27.7188911,8.16987586 27.7191683,8.16435862 27.7197228,8.15856552 C27.7205545,8.14753103 27.7216634,8.13649655 27.7222178,8.12491034 C27.7230495,8.1078069 27.723604,8.09070345 27.723604,8.07332414 C27.723604,8.05594483 27.722495,8.03911724 27.7216634,8.02201379" id="Fill-1"></path>
+                                <path d="M15.6273267,8.07337931 C15.6273267,9.04386207 14.8369505,9.83034483 13.8616634,9.83034483 C12.8863762,9.83034483 12.096,9.04386207 12.096,8.07337931 C12.096,7.10317241 12.8863762,6.31641379 13.8616634,6.31641379 C14.8369505,6.31641379 15.6273267,7.10317241 15.6273267,8.07337931 Z" id="Fill-4"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <div class="eye-tracking-label">
+                        Tracking {{eyeTrackingToggle}}
+                    </div>
+                </div>
               </app-toolbar>
             </app-header>
         </header>
@@ -73,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fallback-selection="404"
             role="main">
           <story-blocks-home name="home"></story-blocks-home>
-          <story-blocks-create name="create" on-change-page="changePage"></story-blocks-create>
+          <story-blocks-create name="create" on-change-page="changePage" eye-tracking="{{eyeTracking}}"></story-blocks-create>
           <story-blocks-stories name="stories"></story-blocks-stories>
           <story-blocks-404 name="404"></story-blocks-404>
         </iron-pages>
@@ -87,6 +122,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             displayHeader: {
                 type: Boolean,
                 computed: 'computeHeader(page)'
+            },
+            eyeTracking: {
+                type: Boolean,
+                value: false
+            },
+            eyeTrackingClass: {
+                type: String,
+                computed: 'computeTrackingClass(eyeTracking)'
+            },
+            eyeTrackingToggle: {
+                type: String,
+                computed: 'computeTrackingToggle(eyeTracking)'
             },
             page: {
                 type: String,
@@ -102,6 +149,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         computeHeader(page) {
             return page === 'home';
+        },
+        computeTrackingClass (eyeTracking) {
+            return eyeTracking ? 'active' : 'inactive';
+        },
+        computeTrackingToggle (eyeTracking) {
+            return eyeTracking ? 'on' : 'off';
+        },
+        toggleEyeTrackingMode () {
+            this.set('eyeTracking', !this.eyeTracking)
         },
         _routePageChanged (page) {
             this.page = page || 'home';

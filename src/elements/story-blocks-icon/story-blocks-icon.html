@@ -5,10 +5,19 @@
     <template>
         <style include="shared-styles">
             :host {
-                @apply --icon-style;
+                border-radius: 4px;
                 cursor: pointer;
+                flex: 1 0 auto;
                 position: relative;
                 background-color: transparent;
+            }
+            :host .icon.small {
+                font-size: 40px;
+                padding: 10px;
+            }
+            :host .icon.large {
+                font-size: 120px;
+                padding: 10px;
             }
             :host .icon {
                 background-color: transparent;
@@ -74,7 +83,7 @@
                 margin-left: 25px;
             }
         </style>
-        <div id="icon" class="icon" on-tap="handleTap">
+        <div id="icon" class$="[[class]]" on-tap="handleTap">
             <span id="image"></span>
             <template is="dom-if" if="[[editable]]">
                 <div class="edit-menu"  hidden$="[[!openMenu]]">
@@ -94,6 +103,10 @@
         Polymer({
             is: 'story-blocks-icon',
             properties: {
+                class: {
+                    type: String,
+                    computed: 'computeClass(size)'
+                },
                 editable: {
                     type: Boolean,
                     value: false
@@ -108,6 +121,10 @@
                 openMenu: {
                     type: Boolean,
                     value: false
+                },
+                size: {
+                    type: String,
+                    value: 'small'
                 }
             },
             attached () {
@@ -117,6 +134,9 @@
                 var baseClass = 'meaning',
                     activeClass = item === current ? 'meaning--current' : 'meaning--alternative';
                 return baseClass + ' ' + activeClass;
+            },
+            computeClass (size) {
+                return 'icon ' + size;
             },
             delete () {
                 this.fire('delete-icon', this.index);

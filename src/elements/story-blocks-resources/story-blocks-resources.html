@@ -6,13 +6,6 @@
         <style include="shared-styles">
             :host {
                 background-color: #e9ebec;
-                height: calc(100vh - 64px);
-                --icon-style: {
-                    border-radius: 4px;
-                    flex: 1 0 auto;
-                    font-size: 40px;
-                    padding: 10px;
-                }
             }
             :host .meaning {
                 cursor: pointer;
@@ -23,12 +16,14 @@
                 flex-wrap: wrap;
                 justify-content: space-between;
                 padding: 50px 100px;
-                overflow: scroll;
+                overflow-y: scroll;
             }
         </style>
         <div class="icons-container">
             <template is="dom-repeat" items="{{icons}}">
-                <story-blocks-icon icon="{{item}}" on-tap="selectIcon"></story-blocks-icon>
+                <story-blocks-icon icon="{{item}}" on-tap="selectIcon"
+                  size="[[computeSize(eyeTracking)]]"
+                ></story-blocks-icon>
             </template>
         </div>
     </template>
@@ -36,7 +31,11 @@
         Polymer({
             is: 'story-blocks-resources',
             properties: {
-                'icons': {
+                eyeTracking: {
+                    type: Boolean,
+                    value: false
+                },
+                icons: {
                     type: Array,
                     notify: true
                 }
@@ -47,6 +46,9 @@
                         return icon.quickaccess;
                     });
                 this.set('icons', filteredSet);
+            },
+            computeSize (eyeTracking) {
+                return eyeTracking ? 'large' : 'small';
             },
             selectIcon (e) {
                 this.fire('select-icon', JSON.parse(JSON.stringify(e.model.item)));
