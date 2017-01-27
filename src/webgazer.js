@@ -10555,6 +10555,7 @@ var mosseFilterResponses = function() {
             }
             var pred = webgazer.util.bound({'x':x/len, 'y':y/len});
             gazeDot.style.transform = 'translate3d(' + pred.x + 'px,' + pred.y + 'px,0)';
+            gazeDot.style.transition = 'transform .2s ease-in-out';
         }
 
         if (!paused) {
@@ -10908,7 +10909,7 @@ var mosseFilterResponses = function() {
      */
     webgazer.addTrackerModule = function(name, constructor) {
         curTrackerMap[name] = function() {
-            contructor();
+            return new constructor();
         };
     };
 
@@ -10919,7 +10920,7 @@ var mosseFilterResponses = function() {
      */
     webgazer.addRegressionModule = function(name, constructor) {
         regressionMap[name] = function() {
-            contructor();
+            return new constructor();
         };
     };
     

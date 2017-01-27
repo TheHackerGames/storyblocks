@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../elements/elements.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../webgazer-wrapper.html">
-
+<link rel="import" href="../webgazer-wrapper.html">
 <dom-module id="story-blocks-tracking">
   <template>
     <style include="shared-styles">
@@ -24,11 +24,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'story-blocks-tracking',
         properties: {},
         attached () {
-            webgazer.setRegression('ridge') /* currently must set regression and tracker */
+            webgazer.addRegressionModule("stable", webgazer.reg.StableReg);
+            webgazer.setRegression('stable') /* currently must set regression and tracker */
                 .setTracker('clmtrackr')
                 .setGazeListener(function (data, clock) {
-                    //   console.log(data); /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
-                    //   console.log(clock); /* elapsed time in milliseconds since webgazer.begin() was called */
+                       //console.log(data); /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
+                       //console.log(clock); /* elapsed time in milliseconds since webgazer.begin() was called */
                 })
                 .begin()
                 .showPredictionPoints(true); /* shows a square every 100 milliseconds where current prediction is */
@@ -43,10 +44,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }, 100);
         },
         drawLoop() {
-            requestAnimFrame(drawLoop);
-            overlay.getContext('2d').clearRect(0, 0, this.width, this.height);
-            if (cl.getCurrentPosition()) {
-                cl.draw(overlay);
+            if (this.drawLoop) {
+                requestAnimFrame(this.drawLoop);
+                this.overlay.getContext('2d').clearRect(0, 0, this.width, this.height);
+                if (this.cl.getCurrentPosition()) {
+                    this.cl.draw(this.overlay);
+                }
             }
         },
         setup () {
@@ -63,7 +66,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             webgazer.params.imgWidth = this.width;
             webgazer.params.imgHeight = this.height;
 
-            var overlay = document.createElement('canvas');
+            var overlay = this.overlay = document.createElement('canvas');
             overlay.id = 'overlay';
             overlay.style.position = 'absolute';
             overlay.width = this.width;
@@ -74,15 +77,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             document.body.appendChild(overlay);
 
-            var cl = webgazer.getTracker().clm;
+            this.cl = webgazer.getTracker().clm;
 
-            // this.drawLoop();
+            this.drawLoop();
         },
         checkIfReady () {
             if (webgazer.isReady()) {
                 this.setup();
             } else {
-                setTimeout(this.checkIfReady, 100);
+                setTimeout(this.checkIfReady.bind(this), 100);
             }
 
 
