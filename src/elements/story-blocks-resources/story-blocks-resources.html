@@ -50,6 +50,15 @@
             },
             selectIcon (e) {
                 this.fire('select-icon', JSON.parse(JSON.stringify(e.model.item)));
+            },
+            lookedAt(e) {
+                var elem = this.root.elementFromPoint(e.x, e.y);
+
+                try {
+                    if (elem.nodeName === 'STORY-BLOCKS-ICON') {
+                        elem.click();
+                    }
+                } catch(e) {}
             }
         });
     </script>
