@@ -60,6 +60,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <a href="/create"><span class="icon icon-pencil-filled"></span>Create a story</a>
             <a href="/stories"><span class="icon icon-bubble-filled"></span>My stories</a>
+            <a href="/tracking">Eye tracking</a>
           </app-toolbar>
         </app-header>
         <iron-pages
@@ -69,6 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             role="main">
           <story-blocks-create name="create" on-change-page="changePage"></story-blocks-create>
           <story-blocks-stories name="stories"></story-blocks-stories>
+          <story-blocks-tracking name="tracking"></story-blocks-tracking>
           <story-blocks-404 name="404"></story-blocks-404>
         </iron-pages>
       </app-header-layout>
@@ -76,31 +78,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
   <script>
     Polymer({
-      is: 'story-blocks',
-      properties: {
-          page: {
-              type: String,
-              reflectToAttribute: true,
-              observer: '_pageChanged',
-          }
-      },
-      observers: [
-          '_routePageChanged(routeData.page)',
-      ],
-      changePage (e) {
-          this.page = e.detail;
-      },
-      _routePageChanged (page) {
-          this.page = page || 'create';
-      },
-      _pageChanged (page) {
-          // Load page import on demand. Show 404 page if fails
-          var resolvedPageUrl = this.resolveUrl('views/story-blocks-' + page + '.html');
-          this.importHref(resolvedPageUrl, null, this._showPage404, true);
-      },
-      _showPage404 () {
-          this.page = '404';
-      },
+        is: 'story-blocks',
+        properties: {
+            page: {
+                type: String,
+                reflectToAttribute: true,
+                observer: '_pageChanged'
+            }
+        },
+        observers: [
+            '_routePageChanged(routeData.page)'
+        ],
+        changePage (e) {
+            this.page = e.detail;
+        },
+        _routePageChanged (page) {
+            this.page = page || 'create';
+        },
+        _pageChanged (page) {
+            // Load page import on demand. Show 404 page if fails
+            var resolvedPageUrl = this.resolveUrl('views/story-blocks-' + page + '.html');
+            this.importHref(resolvedPageUrl, null, this._showPage404, true);
+        },
+        _showPage404 () {
+            this.page = '404';
+        }
     });
   </script>
 </dom-module>
