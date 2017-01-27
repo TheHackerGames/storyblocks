@@ -44,7 +44,7 @@
             attached () {
                 var iconSet = window.Storyblocks.icons,
                     filteredSet = iconSet.filter(function (icon) {
-                        return icon.quickaccess === 'true';
+                        return icon.quickaccess;
                     });
                 this.set('icons', filteredSet);
             },
