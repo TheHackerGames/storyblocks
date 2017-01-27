@@ -2,7 +2,7 @@
 <link rel="import" href="../../shared-styles.html">
 <link rel="import" href="../story-blocks-word/story-blocks-word.html">
 
-<dom-module id="story-output">
+<dom-module id="story-blocks-output">
     <template>
         <style include="shared-styles">
           :host {
@@ -46,12 +46,10 @@
                 </template>
                 <template id="iconslist"
                           is="dom-repeat"
-                          items="[[icons]]"
-                          sort="_sort"
-                          restamp>
+                          items="[[icons]]">
                     <story-blocks-word highlighted="[[item.highlighted]]"
                                        index="{{index}}"
-                                       word="[[item.currentmeaning]]">
+                                       word="[[item.currentmeaning.text]]">
                                        </story-blocks-word>
                 </template>
             </div>
@@ -62,19 +60,17 @@
     </template>
     <script type="text/javascript">
         Polymer({
-            is: 'story-output',
+            is: 'story-blocks-output',
             properties: {
                 icons: {
                     type: Array,
-                    required: true
+                    required: true,
+                    notify: true
                 }
             },
             observers: [
                 'updateIcons(icons.*)'
             ],
-            _sort (a, b) {
-                return (a.order <= b.order) ? -1 : 1;
-            },
             saveStory () {
                 this.fire('save-story');
             },

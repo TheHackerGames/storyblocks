@@ -16,38 +16,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style include="shared-styles">
       :host {
+          background-color: #e9ebec;
           display: flex;
           flex-direction: row;
           justify-content: center;
+          min-height: calc(100vh - 64px);
+          padding: 96px 0;
       }
-      :host .left,
-      :host .right {
-          opacity: 0.5;
-          transition: 0.3s opacity ease;
+      :host .stories {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+          margin: 0 auto;
+          max-width: 980px;
+          width: 100%;
       }
-      :host .left:hover,
-      :host .right:hover {
-          opacity: 1;
-      }
-      :host .left {
-          width: 40%;
-      }
-      :host .right {
-          width: 60%;
-      }
-      :host .story {
-          width: 120px;
-          height: 80px;
-          background-color: grey;
-          margin: 20px;
+      :host story-blocks-story-card {
+          margin: 20px 1%;
+          width: 31%;
       }
     </style>
-
-    <template is="dom-repeat" items="[[savedStories]]">
-        <div class="story" on-tap="openStory">
-            {{item.name}}
-        </div>
-    </template>
+    <div class="stories">
+        <template is="dom-repeat" items="[[savedStories]]">
+            <story-blocks-story-card story="[[item]]" on-tap="openStory"></story-blocks-story-card>
+        </template>
+    </div>
 
   </template>
   <script>

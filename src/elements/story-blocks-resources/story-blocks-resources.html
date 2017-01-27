@@ -1,14 +1,16 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../shared-styles.html">
 
-<dom-module id="resources-collection">
+<dom-module id="story-blocks-resources">
     <template>
         <style include="shared-styles">
             :host {
                 --icon-style: {
                     border-radius: 4px;
+                    flex: 1 0 auto;
                     font-size: 40px;
                     padding: 10px;
+                    height: 30px;
                 }
             }
             :host .meaning {
@@ -33,7 +35,7 @@
     </template>
     <script type="text/javascript">
         Polymer({
-            is: 'resources-collection',
+            is: 'story-blocks-resources',
             properties: {
                 'icons': {
                     type: Array,
@@ -41,7 +43,11 @@
                 }
             },
             attached () {
-                this.set('icons', window.Storyblocks.emojis);
+                var iconSet = window.Storyblocks.icons,
+                    filteredSet = iconSet.filter(function (icon) {
+                        return icon.quickaccess === 'true';
+                    });
+                this.set('icons', filteredSet);
             },
             selectIcon (e) {
                 this.fire('select-icon', JSON.parse(JSON.stringify(e.model.item)));

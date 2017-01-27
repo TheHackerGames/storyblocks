@@ -12,24 +12,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../elements/elements.html">
 <link rel="import" href="../shared-styles.html">
 <link rel="import" href="../webgazer-wrapper.html">
-<link rel="import" href="../webgazer-wrapper.html">
+
 <dom-module id="story-blocks-tracking">
   <template>
     <style include="shared-styles">
+        .box {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        .blue {
+            background-color: blue;
+        }
+        .red {
+            background-color: red;
+        }
     </style>
 
+    <div class="box blue">
+    </div>
+    <div class="box red">
+    </div>
+    <div class="box blue">
+    </div>
+    <div class="box red">
+    </div>
   </template>
   <script>
     Polymer({
         is: 'story-blocks-tracking',
-        properties: {},
+        properties: {
+            checking: {
+                type: Boolean,
+                value: false
+            }
+        },
         attached () {
-            webgazer.addRegressionModule("stable", webgazer.reg.StableReg);
-            webgazer.setRegression('stable') /* currently must set regression and tracker */
+            webgazer.setRegression('ridge') /* currently must set regression and tracker */
                 .setTracker('clmtrackr')
                 .setGazeListener(function (data, clock) {
-                       //console.log(data); /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
-                       //console.log(clock); /* elapsed time in milliseconds since webgazer.begin() was called */
+                    //   console.log(data); /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
+                    //   console.log(clock); /* elapsed time in milliseconds since webgazer.begin() was called */
                 })
                 .begin()
                 .showPredictionPoints(true); /* shows a square every 100 milliseconds where current prediction is */
@@ -43,13 +66,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.checkIfReady();
             }, 100);
         },
-        drawLoop() {
-            if (this.drawLoop) {
-                requestAnimFrame(this.drawLoop);
-                this.overlay.getContext('2d').clearRect(0, 0, this.width, this.height);
-                if (this.cl.getCurrentPosition()) {
-                    this.cl.draw(this.overlay);
+        checkEyeLocation() {
+            if (this.checking) {
+                return;
+            }
+
+            this.checking = true;
+            setInterval(() => {
+                var pos = webgazer.getCurrentPrediction()
+                    ,current = this.root.elementFromPoint(pos.x, pos.y);
+                if (this.selectedElement !== current) {
+                    this.selectedElement = current;
+                    this.selectedElementTime = Date.now();
+                } else {
+                    if (Date.now() - this.selectedElementTime > 3000) {
+                        this.selectedElementTime = Date.now();
+                    }
                 }
+            }, 300);
+        },
+        drawLoop() {
+            requestAnimFrame(drawLoop);
+            overlay.getContext('2d').clearRect(0, 0, this.width, this.height);
+            if (cl.getCurrentPosition()) {
+                cl.draw(overlay);
             }
         },
         setup () {
@@ -66,7 +106,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             webgazer.params.imgWidth = this.width;
             webgazer.params.imgHeight = this.height;
 
-            var overlay = this.overlay = document.createElement('canvas');
+            var overlay = document.createElement('canvas');
             overlay.id = 'overlay';
             overlay.style.position = 'absolute';
             overlay.width = this.width;
@@ -77,18 +117,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             document.body.appendChild(overlay);
 
-            this.cl = webgazer.getTracker().clm;
+            var cl = webgazer.getTracker().clm;
 
-            this.drawLoop();
+            setTimeout(() => {
+                this.checkEyeLocation();
+            }, 2000);
+
+            // this.drawLoop();
         },
         checkIfReady () {
             if (webgazer.isReady()) {
                 this.setup();
             } else {
-                setTimeout(this.checkIfReady.bind(this), 100);
+                setTimeout(this.checkIfReady, 100);
             }
-
-
         }
     });
   </script>
