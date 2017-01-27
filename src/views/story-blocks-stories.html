@@ -55,6 +55,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         attached () {
             this.savedStories = JSON.parse(localStorage.getItem('stories'));
         },
+        ready () {
+            this.savedStories = JSON.parse(localStorage.getItem('stories'));
+        },
         openStory (e) {
             localStorage.setItem('story', JSON.stringify(e.model.item));
             window.location.href = '/create';

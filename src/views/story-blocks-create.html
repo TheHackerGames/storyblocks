@@ -27,6 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           opacity: 0.5;
           height: calc(100vh - 64px);
           transition: 0.3s opacity ease;
+          z-index: 1;
       }
       :host .left:hover,
       :host .right:hover {
@@ -99,6 +100,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.set('selectedIcons.' + index + '.highlighted', highlighted);
         },
         openSaveModal () {
+            this.$['save-modal'].icons = [];
             this.$['save-modal'].icons = this.selectedIcons;
             this.$['save-modal'].open();
         },
