@@ -21,7 +21,7 @@
         </style>
         <div class="icons-container">
             <template is="dom-repeat" items="{{icons}}">
-                <story-blocks-icon icon="{{item}}" on-tap="selectIcon"
+                <story-blocks-icon id="emoji-{{index}}" icon="{{item}}" on-tap="selectIcon"
                   size="[[computeSize(eyeTracking)]]"
                 ></story-blocks-icon>
             </template>
@@ -38,6 +38,10 @@
                 icons: {
                     type: Array,
                     notify: true
+                },
+                eyeTouchTimes: {
+                    type: Array,
+                    value: []
                 }
             },
             attached () {
@@ -58,7 +62,17 @@
 
                 try {
                     if (elem.nodeName === 'STORY-BLOCKS-ICON') {
-                        elem.click();
+                        console.log('confirm ', this.eyeTouchTimes[elem.id]);
+                        if (!this.eyeTouchTimes[elem.id]) {
+                            this.eyeTouchTimes[elem.id] = 0;
+                        }
+                        if (this.eyeTouchTimes[elem.id] > 3)
+                        {
+                            this.eyeTouchTimes = [];
+                            elem.click();
+                        }else {
+                            this.eyeTouchTimes[elem.id] += 1;
+                        }
                     }
                 } catch(e) {}
             }
