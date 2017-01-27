@@ -74,7 +74,7 @@
                 this.$.modal.open();
             },
             selectName (e) {
-                this.set('name', e.detail.currentmeaning);
+                this.set('name', e.detail.currentmeaning.text);
                 this.set('icon', e.detail.code_decimal);
             },
             saveStory () {

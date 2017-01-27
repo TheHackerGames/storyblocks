@@ -5,23 +5,22 @@
     <template>
         <style include="shared-styles">
             :host {
+                background-color: #e9ebec;
+                height: calc(100vh - 64px);
                 --icon-style: {
                     border-radius: 4px;
                     flex: 1 0 auto;
                     font-size: 40px;
                     padding: 10px;
-                    height: 30px;
                 }
             }
             :host .meaning {
                 cursor: pointer;
             }
             :host .icons-container {
-                background-color: #e9ebec;
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
-                height: calc(100vh - 64px);
                 justify-content: space-between;
                 padding: 50px 100px;
                 overflow: scroll;
