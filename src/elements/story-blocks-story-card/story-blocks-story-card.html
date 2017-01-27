@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../shared-styles.html">
+
+<dom-module id="story-blocks-story-card">
+    <template>
+        <style include="shared-styles">
+
+        </style>
+        <span id="card" class="card">
+            <div id="icon"></div>
+            {{story.name}}
+            {{story.code_decimal}}
+        </span>
+    </template>
+    <script type="text/javascript">
+        Polymer({
+            is: 'story-blocks-story-card',
+            properties: {
+                story: {
+                    type: Object
+                }
+            },
+            attached () {
+                this.$.icon.innerHTML = this.story.icon;
+            },
+            ready () {
+                console.log(this.story);
+            }
+        });
+    </script>
+</dom-module>
